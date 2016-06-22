@@ -1,6 +1,6 @@
 //
-//  ACAlertContollerAnimatedTransitioning.swift
-//  CustomizableAlertController
+//  ACAlertControllerAnimatedTransitioning.swift
+//  ACAlertController
 //
 //  Created by Yury on 22/06/16.
 //  Copyright © 2016 Avtolic. All rights reserved.
@@ -8,12 +8,12 @@
 
 import UIKit
 
-class ACAlertContollerAnimatedTransitioning : NSObject, UIViewControllerAnimatedTransitioning {
+class ACAlertControllerAnimatedTransitioning : NSObject, UIViewControllerAnimatedTransitioning {
     
     let animationDuration : NSTimeInterval = 0.16
     let appearing : Bool
     
-    init(appearing: Bool = true) {
+    init(appearing: Bool) {
         self.appearing = appearing
         super.init()
     }

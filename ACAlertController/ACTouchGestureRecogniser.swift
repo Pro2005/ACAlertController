@@ -1,6 +1,6 @@
 //
 //  ACTouchGestureRecogniser.swift
-//  CustomizableAlertController
+//  ACAlertController
 //
 //  Created by Yury on 21/06/16.
 //  Copyright © 2016 Avtolic. All rights reserved.
@@ -8,7 +8,7 @@
 import UIKit
 import UIKit.UIGestureRecognizerSubclass
 
-class ACTouchGestureRecogniser: UIGestureRecognizer {
+class ACTouchGestureRecognizer: UIGestureRecognizer {
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent) {
         super.touchesBegan(touches, withEvent: event)

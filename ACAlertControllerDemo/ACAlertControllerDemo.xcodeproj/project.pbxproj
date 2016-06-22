@@ -10,7 +10,7 @@
 		D2428C731D1B1168006B3036 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2428C721D1B1168006B3036 /* AppDelegate.swift */; };
 		D2428C7A1D1B1168006B3036 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D2428C791D1B1168006B3036 /* Assets.xcassets */; };
 		D2428C7D1D1B1168006B3036 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2428C7B1D1B1168006B3036 /* LaunchScreen.storyboard */; };
-		D2428C881D1B12E1006B3036 /* ACAlertContollerAnimatedTransitioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2428C851D1B12E1006B3036 /* ACAlertContollerAnimatedTransitioning.swift */; };
+		D2428C881D1B12E1006B3036 /* ACAlertControllerAnimatedTransitioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2428C851D1B12E1006B3036 /* ACAlertControllerAnimatedTransitioning.swift */; };
 		D2428C891D1B12E1006B3036 /* ACAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2428C861D1B12E1006B3036 /* ACAlertController.swift */; };
 		D2428C8A1D1B12E1006B3036 /* ACTouchGestureRecogniser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2428C871D1B12E1006B3036 /* ACTouchGestureRecogniser.swift */; };
 		D2428C8D1D1B1314006B3036 /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2428C8B1D1B1314006B3036 /* DemoViewController.swift */; };
@@ -23,7 +23,7 @@
 		D2428C791D1B1168006B3036 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D2428C7C1D1B1168006B3036 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D2428C7E1D1B1168006B3036 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D2428C851D1B12E1006B3036 /* ACAlertContollerAnimatedTransitioning.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACAlertContollerAnimatedTransitioning.swift; sourceTree = "<group>"; };
+		D2428C851D1B12E1006B3036 /* ACAlertControllerAnimatedTransitioning.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACAlertControllerAnimatedTransitioning.swift; sourceTree = "<group>"; };
 		D2428C861D1B12E1006B3036 /* ACAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACAlertController.swift; sourceTree = "<group>"; };
 		D2428C871D1B12E1006B3036 /* ACTouchGestureRecogniser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACTouchGestureRecogniser.swift; sourceTree = "<group>"; };
 		D2428C8B1D1B1314006B3036 /* DemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
@@ -74,7 +74,7 @@
 		D2428C841D1B12E1006B3036 /* ACAlertController */ = {
 			isa = PBXGroup;
 			children = (
-				D2428C851D1B12E1006B3036 /* ACAlertContollerAnimatedTransitioning.swift */,
+				D2428C851D1B12E1006B3036 /* ACAlertControllerAnimatedTransitioning.swift */,
 				D2428C861D1B12E1006B3036 /* ACAlertController.swift */,
 				D2428C871D1B12E1006B3036 /* ACTouchGestureRecogniser.swift */,
 			);
@@ -156,7 +156,7 @@
 				D2428C731D1B1168006B3036 /* AppDelegate.swift in Sources */,
 				D2428C891D1B12E1006B3036 /* ACAlertController.swift in Sources */,
 				D2428C8D1D1B1314006B3036 /* DemoViewController.swift in Sources */,
-				D2428C881D1B12E1006B3036 /* ACAlertContollerAnimatedTransitioning.swift in Sources */,
+				D2428C881D1B12E1006B3036 /* ACAlertControllerAnimatedTransitioning.swift in Sources */,
 				D2428C8A1D1B12E1006B3036 /* ACTouchGestureRecogniser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -301,6 +301,7 @@
 				D2428C831D1B1168006B3036 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -1,6 +1,6 @@
 //
 //  AlertController.swift
-//  CustomizableAlertController
+//  ACAlertController
 //
 //  Created by Yury on 17/06/16.
 //  Copyright © 2016 Avtolic. All rights reserved.
@@ -122,7 +122,7 @@ public class ACAlertController : UIViewController {
     }
     
     // MARK: UIViewController
-    init() {
+    public init() {
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .Custom
         transitioningDelegate = self
@@ -150,7 +150,7 @@ public class ACAlertController : UIViewController {
             NSLayoutConstraint(item: alertView, attribute: .BottomMargin, relatedBy: .Equal, toItem: lastView, attribute: .Bottom, multiplier: 1, constant: 0).active = true
         }
         
-        alertView.addGestureRecognizer(ACTouchGestureRecogniser(target: self, action: #selector(handlePanRecognizer)))
+        alertView.addGestureRecognizer(ACTouchGestureRecognizer(target: self, action: #selector(handlePanRecognizer)))
     }
     
     // MARK: Private methods
@@ -385,11 +385,11 @@ public class ACAlertController : UIViewController {
 extension ACAlertController: UIViewControllerTransitioningDelegate {
 
     public func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return ACAlertContollerAnimatedTransitioning()
+        return ACAlertControllerAnimatedTransitioning(appearing: true)
     }
     
     public func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return ACAlertContollerAnimatedTransitioning(appearing: false)
+        return ACAlertControllerAnimatedTransitioning(appearing: false)
     }
 }
 
