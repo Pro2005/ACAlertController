@@ -1,0 +1,308 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D2428C731D1B1168006B3036 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2428C721D1B1168006B3036 /* AppDelegate.swift */; };
+		D2428C7A1D1B1168006B3036 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D2428C791D1B1168006B3036 /* Assets.xcassets */; };
+		D2428C7D1D1B1168006B3036 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2428C7B1D1B1168006B3036 /* LaunchScreen.storyboard */; };
+		D2428C881D1B12E1006B3036 /* ACAlertContollerAnimatedTransitioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2428C851D1B12E1006B3036 /* ACAlertContollerAnimatedTransitioning.swift */; };
+		D2428C891D1B12E1006B3036 /* ACAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2428C861D1B12E1006B3036 /* ACAlertController.swift */; };
+		D2428C8A1D1B12E1006B3036 /* ACTouchGestureRecogniser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2428C871D1B12E1006B3036 /* ACTouchGestureRecogniser.swift */; };
+		D2428C8D1D1B1314006B3036 /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2428C8B1D1B1314006B3036 /* DemoViewController.swift */; };
+		D2428C8E1D1B1314006B3036 /* DemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2428C8C1D1B1314006B3036 /* DemoViewController.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		D2428C6F1D1B1168006B3036 /* ACAlertControllerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ACAlertControllerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2428C721D1B1168006B3036 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D2428C791D1B1168006B3036 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D2428C7C1D1B1168006B3036 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		D2428C7E1D1B1168006B3036 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D2428C851D1B12E1006B3036 /* ACAlertContollerAnimatedTransitioning.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACAlertContollerAnimatedTransitioning.swift; sourceTree = "<group>"; };
+		D2428C861D1B12E1006B3036 /* ACAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACAlertController.swift; sourceTree = "<group>"; };
+		D2428C871D1B12E1006B3036 /* ACTouchGestureRecogniser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACTouchGestureRecogniser.swift; sourceTree = "<group>"; };
+		D2428C8B1D1B1314006B3036 /* DemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
+		D2428C8C1D1B1314006B3036 /* DemoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DemoViewController.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D2428C6C1D1B1168006B3036 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D2428C661D1B1168006B3036 = {
+			isa = PBXGroup;
+			children = (
+				D2428C841D1B12E1006B3036 /* ACAlertController */,
+				D2428C711D1B1168006B3036 /* ACAlertControllerDemo */,
+				D2428C701D1B1168006B3036 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D2428C701D1B1168006B3036 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D2428C6F1D1B1168006B3036 /* ACAlertControllerDemo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D2428C711D1B1168006B3036 /* ACAlertControllerDemo */ = {
+			isa = PBXGroup;
+			children = (
+				D2428C8B1D1B1314006B3036 /* DemoViewController.swift */,
+				D2428C8C1D1B1314006B3036 /* DemoViewController.xib */,
+				D2428C721D1B1168006B3036 /* AppDelegate.swift */,
+				D2428C791D1B1168006B3036 /* Assets.xcassets */,
+				D2428C7B1D1B1168006B3036 /* LaunchScreen.storyboard */,
+				D2428C7E1D1B1168006B3036 /* Info.plist */,
+			);
+			path = ACAlertControllerDemo;
+			sourceTree = "<group>";
+		};
+		D2428C841D1B12E1006B3036 /* ACAlertController */ = {
+			isa = PBXGroup;
+			children = (
+				D2428C851D1B12E1006B3036 /* ACAlertContollerAnimatedTransitioning.swift */,
+				D2428C861D1B12E1006B3036 /* ACAlertController.swift */,
+				D2428C871D1B12E1006B3036 /* ACTouchGestureRecogniser.swift */,
+			);
+			name = ACAlertController;
+			path = ../ACAlertController;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D2428C6E1D1B1168006B3036 /* ACAlertControllerDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D2428C811D1B1168006B3036 /* Build configuration list for PBXNativeTarget "ACAlertControllerDemo" */;
+			buildPhases = (
+				D2428C6B1D1B1168006B3036 /* Sources */,
+				D2428C6C1D1B1168006B3036 /* Frameworks */,
+				D2428C6D1D1B1168006B3036 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ACAlertControllerDemo;
+			productName = ACAlertControllerDemo;
+			productReference = D2428C6F1D1B1168006B3036 /* ACAlertControllerDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D2428C671D1B1168006B3036 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = Avtolic;
+				TargetAttributes = {
+					D2428C6E1D1B1168006B3036 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+				};
+			};
+			buildConfigurationList = D2428C6A1D1B1168006B3036 /* Build configuration list for PBXProject "ACAlertControllerDemo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D2428C661D1B1168006B3036;
+			productRefGroup = D2428C701D1B1168006B3036 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D2428C6E1D1B1168006B3036 /* ACAlertControllerDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D2428C6D1D1B1168006B3036 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D2428C7D1D1B1168006B3036 /* LaunchScreen.storyboard in Resources */,
+				D2428C7A1D1B1168006B3036 /* Assets.xcassets in Resources */,
+				D2428C8E1D1B1314006B3036 /* DemoViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D2428C6B1D1B1168006B3036 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D2428C731D1B1168006B3036 /* AppDelegate.swift in Sources */,
+				D2428C891D1B12E1006B3036 /* ACAlertController.swift in Sources */,
+				D2428C8D1D1B1314006B3036 /* DemoViewController.swift in Sources */,
+				D2428C881D1B12E1006B3036 /* ACAlertContollerAnimatedTransitioning.swift in Sources */,
+				D2428C8A1D1B12E1006B3036 /* ACTouchGestureRecogniser.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		D2428C7B1D1B1168006B3036 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D2428C7C1D1B1168006B3036 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D2428C7F1D1B1168006B3036 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D2428C801D1B1168006B3036 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D2428C821D1B1168006B3036 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = ACAlertControllerDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = AC.ACAlertControllerDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		D2428C831D1B1168006B3036 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = ACAlertControllerDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = AC.ACAlertControllerDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D2428C6A1D1B1168006B3036 /* Build configuration list for PBXProject "ACAlertControllerDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D2428C7F1D1B1168006B3036 /* Debug */,
+				D2428C801D1B1168006B3036 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D2428C811D1B1168006B3036 /* Build configuration list for PBXNativeTarget "ACAlertControllerDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D2428C821D1B1168006B3036 /* Debug */,
+				D2428C831D1B1168006B3036 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D2428C671D1B1168006B3036 /* Project object */;
+}
