@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "ACAlertController"
-  s.version      = "0.0.1"
+  s.version      = "0.0.2"
   s.summary      = "Highly customisable but very simple replacement for UIAlertController."
   s.description  = <<-DESC
 By default ACAlertController looks exactly like native UIAlertController but could be modified as you wish. ACAlertController could use any UIViews (images, controls, complex composite views, Nib-driven views, etc.) as items and buttons.
