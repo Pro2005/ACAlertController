@@ -10,7 +10,7 @@ import UIKit
 
 // MARK: Protocols and Extensions
 
-public protocol ACAlertItem {
+public protocol ACAlertItemProtocol {
     
     var alertItemView: UIView { get }
 }
@@ -23,7 +23,7 @@ public protocol ACAlertActionProtocol {
     var enabled: Bool { get }
 }
 
-extension UIView: ACAlertItem {
+extension UIView: ACAlertItemProtocol {
     
     public var alertItemView: UIView { return self }
 }
@@ -60,8 +60,8 @@ public class ACAlertController : UIViewController {
 
     // MARK: Properties
     
-    private(set) public var itemInsetPairs: [(ACAlertItem, UIEdgeInsets)] = []
-    public var items: [ACAlertItem] { return itemInsetPairs.map{ $0.0 } }
+    private(set) public var itemInsetPairs: [(ACAlertItemProtocol, UIEdgeInsets)] = []
+    public var items: [ACAlertItemProtocol] { return itemInsetPairs.map{ $0.0 } }
     private(set) public var actions: [ACAlertActionProtocol] = []
     
     public var tintColor = UIColor.blueColor()
@@ -105,7 +105,7 @@ public class ACAlertController : UIViewController {
     
     
     // MARK: Public methods
-    public func addItem(item: ACAlertItem, inset: UIEdgeInsets? = nil) {
+    public func addItem(item: ACAlertItemProtocol, inset: UIEdgeInsets? = nil) {
         guard isBeingPresented() == false else {
             print("ACAlertController could not be modified if it is already presented")
             return
@@ -150,7 +150,16 @@ public class ACAlertController : UIViewController {
             NSLayoutConstraint(item: alertView, attribute: .BottomMargin, relatedBy: .Equal, toItem: lastView, attribute: .Bottom, multiplier: 1, constant: 0).active = true
         }
         
-        alertView.addGestureRecognizer(ACTouchGestureRecognizer(target: self, action: #selector(handlePanRecognizer)))
+        let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleRecognizer))
+        recognizer.minimumPressDuration = 0.0
+        recognizer.allowableMovement = CGFloat.max
+        recognizer.cancelsTouchesInView = false
+        recognizer.delegate = self
+        alertView.addGestureRecognizer(recognizer)
+//        let recognizer = ACTouchGestureRecognizer(target: self, action: #selector(handleRecognizer))
+//        recognizer.cancelsTouchesInView = false
+//        alertView.addGestureRecognizer(recognizer)
+//        recognizer.cancelsTouchesInView = false
     }
     
     // MARK: Private methods
@@ -225,7 +234,7 @@ public class ACAlertController : UIViewController {
         return lineView
     }
     
-    private func addItems(itemInsetPairs: [(ACAlertItem, UIEdgeInsets)]) -> (lastView: UIView?, nextItemOffset: CGFloat) {
+    private func addItems(itemInsetPairs: [(ACAlertItemProtocol, UIEdgeInsets)]) -> (lastView: UIView?, nextItemOffset: CGFloat) {
         
         var lastView: UIView?
         var nextItemOffset: CGFloat = 0
@@ -363,13 +372,14 @@ public class ACAlertController : UIViewController {
     }
     
 // MARK: Touch recogniser
-    @objc private func handlePanRecognizer(recognizer: UIPanGestureRecognizer) {
+    @objc private func handleRecognizer(recognizer: ACTouchGestureRecognizer) {
         
+        print(recognizer.state.rawValue)
         let point = recognizer.locationInView(alertView)
         
         for (button, action) in button2actionDict
         {
-            let isActive = button.frame.contains(point)
+            let isActive = button.frame.contains(point) && action.enabled
             let isHighlighted = isActive && (recognizer.state == .Began || recognizer.state == .Changed)
             
             button.backgroundColor = isHighlighted ? buttonHighlightColor : buttonColor
@@ -391,6 +401,36 @@ extension ACAlertController: UIViewControllerTransitioningDelegate {
     public func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return ACAlertControllerAnimatedTransitioning(appearing: false)
     }
+}
+
+extension ACAlertController: UIGestureRecognizerDelegate {
+    
+    // note: returning YES is guaranteed to allow simultaneous recognition. returning NO is not guaranteed to prevent simultaneous recognition, as the other gesture's delegate may return YES
+    public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//        print("shouldRecognizeSimultaneouslyWithGestureRecognizer \n\(gestureRecognizer)\n\(otherGestureRecognizer)")
+        return true
+    }
+    
+//    public func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+//        let point = gestureRecognizer.locationInView(alertView)
+//        let subview = alertView.hitTest(point, withEvent: nil) as? UIControl
+//        return subview == nil
+//    }
+
+    // called once per attempt to recognize, so failure requirements can be determined lazily and may be set up between recognizers across view hierarchies
+    // return YES to set up a dynamic failure requirement between gestureRecognizer and otherGestureRecognizer
+    //
+    // note: returning YES is guaranteed to set up the failure requirement. returning NO does not guarantee that there will not be a failure requirement as the other gesture's counterpart delegate or subclass methods may return YES
+//    public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOfGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//        print("shouldRequireFailureOfGestureRecognizer \n\(gestureRecognizer)\n\(otherGestureRecognizer)")
+//        return true
+//    }
+//
+//    public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailByGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//        print("shouldBeRequiredToFailByGestureRecognizer\n\(gestureRecognizer)\n\(otherGestureRecognizer)")
+//        return true
+//    }
+
 }
 
 // MARK: -
