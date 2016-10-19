@@ -149,8 +149,6 @@ open class ACAlertController : UIViewController {
 //        v4.backgroundColor = UIColor.greenColor()
 //        v4.frame = CGRect(x: 100, y: 250, width: 100, height: 50)
 //        view.addSubview(v4)
-        
-        return
 
 //        alertView = addAlertView()
 //        return
@@ -315,7 +313,7 @@ open class ACAlertController : UIViewController {
                 addButton(button1, lastView: lastView, leadingAttr: .leading, trailingAttr: .centerX)
                 addButton(button2, lastView: lastView, leadingAttr: .centerX, trailingAttr: .trailing)
                 NSLayoutConstraint(item: button1, attribute: .bottom, relatedBy: .equal, toItem: button2, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
-                addVerticalLine(button1)
+                let _ = addVerticalLine(button1)
                 lastView = button1
             }
             else {
