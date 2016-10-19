@@ -13,11 +13,11 @@ class DemoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let button = UIButton(type: .System)
+        let button = UIButton(type: .system)
         button.frame = CGRect(x: 10, y: 200, width: 330, height: 100)
-        button.setTitle("Normal", forState: .Normal)
-        button.setTitle("Highlighted", forState: .Highlighted)
-        button.backgroundColor = UIColor.yellowColor().colorWithAlphaComponent(0.5)
+        button.setTitle("Normal", for: UIControlState())
+        button.setTitle("Highlighted", for: .highlighted)
+        button.backgroundColor = UIColor.yellow.withAlphaComponent(0.5)
         view.addSubview(button)
         // Do any additional setup after loading the view.
     }
@@ -25,11 +25,11 @@ class DemoViewController: UIViewController {
 
 extension DemoViewController {
     
-    func createLabel(text: String?, textColor: UIColor = UIColor.blackColor(), color: UIColor = UIColor.clearColor()) -> UILabel {
+    func createLabel(_ text: String?, textColor: UIColor = UIColor.black, color: UIColor = UIColor.clear) -> UILabel {
         let label = UILabel()
         label.text = text
         label.numberOfLines = 1
-        label.font = UIFont.systemFontOfSize(15)
+        label.font = UIFont.systemFont(ofSize: 15)
         label.textColor = textColor
         label.backgroundColor = color
 //        label.sizeToFit()
@@ -39,14 +39,14 @@ extension DemoViewController {
     func createTextField() -> UITextField {
         let textField = UITextField()
         textField.placeholder = "Name"
-        textField.autocapitalizationType = .Words
-        textField.returnKeyType = .Done
+        textField.autocapitalizationType = .words
+        textField.returnKeyType = .done
         textField.enablesReturnKeyAutomatically = true
-        textField.borderStyle = .Line
-        textField.backgroundColor = UIColor.whiteColor()
-        let width = NSLayoutConstraint(item: textField, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: 270)
+        textField.borderStyle = .line
+        textField.backgroundColor = UIColor.white
+        let width = NSLayoutConstraint(item: textField, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 270)
         width.priority = 995
-        width.active = true
+        width.isActive = true
         return textField
     }
     
@@ -66,38 +66,38 @@ extension DemoViewController {
         alert.addItem(createTextField(), inset: margins2)
         alert.addItem(createTextField())
         
-        alert.addItem(createLabel("Short text", textColor: UIColor.magentaColor(), color: UIColor.yellowColor()))
+        alert.addItem(createLabel("Short text", textColor: UIColor.magenta, color: UIColor.yellow))
         alert.addItem(createLabel("Some not very short but quite long text here. Hello world!",
-            textColor: UIColor.cyanColor(), color: UIColor.orangeColor()))
+            textColor: UIColor.cyan, color: UIColor.orange))
         alert.addItem(createLabel("Some not very short but quite long text here. Hello world!",
-            textColor: UIColor.magentaColor(), color: UIColor.yellowColor()))
+            textColor: UIColor.magenta, color: UIColor.yellow))
         
         alert.addAction(ACAlertAction(view: UIImageView(image: UIImage(named: "Details Icon")), handler: { (_) in
             print("Action Details")
         }))
         let historyImageView = UIImageView(image: UIImage(named: "Checklist Icon OK"))
-        historyImageView.setContentCompressionResistancePriority(995, forAxis: .Vertical)
+        historyImageView.setContentCompressionResistancePriority(995, for: .vertical)
         alert.addAction(ACAlertAction(view: historyImageView, handler: { (_) in
             print("Action History")
         }))
         
-        let action = ACAlertActionNative(title: "Disabled title", style: .Default, handler: { (_) in
+        let action = ACAlertActionNative(title: "Disabled title", style: .default, handler: { (_) in
             print("Disabled")
         })
         action.enabled = false
         alert.addAction(action)
 
-        alert.addAction(ACAlertActionNative(title: "A", style: .Default, handler: { (_) in
+        alert.addAction(ACAlertActionNative(title: "A", style: .default, handler: { (_) in
             print("Default")
         }))
-        alert.addAction(ACAlertActionNative(title: "C", style: .Cancel, handler: { (_) in
+        alert.addAction(ACAlertActionNative(title: "C", style: .cancel, handler: { (_) in
             print("Cancel")
         }))
-        alert.addAction(ACAlertActionNative(title: "Destructive title", style: .Destructive, handler: { (_) in
+        alert.addAction(ACAlertActionNative(title: "Destructive title", style: .destructive, handler: { (_) in
             print("Destructive")
         }))
         
-        presentViewController(alert, animated: true){
+        present(alert, animated: true){
         }
     }
     @IBAction func newTwo() {
@@ -111,68 +111,76 @@ extension DemoViewController {
 extension DemoViewController {
     
     @IBAction func onOne() {
-        let alertController = UIAlertController(title: "", message: nil, preferredStyle: .Alert)
+        let alertController = UIAlertController(title: "", message: nil, preferredStyle: .alert)
 //        let yesAction = UIAlertAction(title: "Yes", style: .Default){ (action) in    }
 //        alertController.addAction(yesAction)
 
 //        let alertController = UIAlertController(title: "Title Lorem Ipsum bla bla bla very long title Lorem Ipsum bla bla bla very long title", message: "Are you sure you want to Sign Out?", preferredStyle: .Alert)
 //        let yesAction = UIAlertAction(title: "Yes", style: .Default){ (action) in    }
 //        alertController.addAction(yesAction)
-        presentViewController(alertController, animated: true) {}
+        present(alertController, animated: true) {}
     }
     @IBAction func onTwo() {
-        let alertController = UIAlertController(title: "Title", message: "Are you sure you want to Sign Out?", preferredStyle: .Alert)
-        let noAction = UIAlertAction(title: "No", style: .Cancel){ (action) in }
-        let yesAction = UIAlertAction(title: "Yes", style: .Default){ (action) in    }
+        let alertController = UIAlertController(title: "Title", message: "Are you sure you want to Sign Out?", preferredStyle: .alert)
+        let noAction = UIAlertAction(title: "No", style: .cancel){ (action) in }
+        let yesAction = UIAlertAction(title: "Yes", style: .default){ (action) in    }
         alertController.addAction(noAction)
         alertController.addAction(yesAction)
-        presentViewController(alertController, animated: true) {}
+        let alertView = alertController.view
+        alertView?.frame.origin = CGPoint(x: 100, y: 270)
+        view.addSubview(alertView!)
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(1000000) / Double(NSEC_PER_SEC)) {
+            print("ggg")
+            alertView?.frame.origin = CGPoint(x: 100, y: 270)
+        }
+//        presentViewController(alertController, animated: true) {}
     }
     @IBAction func onThree() {
-        let alertController = UIAlertController(title: "Title", message: "Are you sure you want to Sign Out?", preferredStyle: .Alert)
-        let noAction = UIAlertAction(title: "No", style: .Cancel){ (action) in print("No") }
-        let yesAction = UIAlertAction(title: "Yes", style: .Default){ (action) in print("Yes") }
-        let destrAction = UIAlertAction(title: "Destructive", style: .Destructive){ (action) in print("Destructive") }
-        let disableAction = UIAlertAction(title: "Destr", style: .Default){ (action) in    }
+        let alertController = UIAlertController(title: "Title", message: "Are you sure you want to Sign Out?", preferredStyle: .alert)
+        let noAction = UIAlertAction(title: "No", style: .cancel){ (action) in print("No") }
+        let yesAction = UIAlertAction(title: "Yes", style: .default){ (action) in print("Yes") }
+        let destrAction = UIAlertAction(title: "Destructive", style: .destructive){ (action) in print("Destructive") }
+        let disableAction = UIAlertAction(title: "Destr", style: .default){ (action) in    }
         alertController.addAction(noAction)
         alertController.addAction(yesAction)
         alertController.addAction(destrAction)
         alertController.addAction(disableAction)
-        disableAction.enabled = false
+        disableAction.isEnabled = false
 //        noAction.enabled = false
 //        yesAction.enabled = false
 //        destrAction.enabled = false
-        presentViewController(alertController, animated: true) {
+        present(alertController, animated: true) {
         }
     }
     
     @IBAction func onEdit() {
-        let alertController = UIAlertController(title: "Name the Song", message: "Song name not on the list?\nEnter it here.", preferredStyle: .Alert)
+        let alertController = UIAlertController(title: "Name the Song", message: "Song name not on the list?\nEnter it here.", preferredStyle: .alert)
         
-        alertController.addTextFieldWithConfigurationHandler { (textField) -> Void in
+        alertController.addTextField { (textField) -> Void in
             textField.placeholder = "Name"
-            textField.autocapitalizationType = .Words
-            textField.returnKeyType = .Done
+            textField.autocapitalizationType = .words
+            textField.returnKeyType = .done
             textField.enablesReturnKeyAutomatically = true
         }
-        alertController.addTextFieldWithConfigurationHandler { (textField) -> Void in
+        alertController.addTextField { (textField) -> Void in
             textField.placeholder = "Name 2"
-            textField.autocapitalizationType = .Words
-            textField.returnKeyType = .Done
+            textField.autocapitalizationType = .words
+            textField.returnKeyType = .done
             textField.enablesReturnKeyAutomatically = true
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel){ (action) in }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel){ (action) in }
         alertController.addAction(cancelAction)
         
-        let submitAction = UIAlertAction(title: "Submit", style: .Default){ (action) in
-            if let field = alertController.textFields?.first, let text = field.text where !text.isEmpty {
+        let submitAction = UIAlertAction(title: "Submit", style: .default){ (action) in
+            if let field = alertController.textFields?.first, let text = field.text , !text.isEmpty {
                 print(text)
             }
         }
         alertController.addAction(submitAction)
         
-        self.presentViewController(alertController, animated: true) {
+        self.present(alertController, animated: true) {
 //            print(alertController.view.performSelector("recursiveDescription"))
 //            print(alertController.view.gestureRecognizers)
 //            alertController.view.removeGestureRecognizer(alertController.view.gestureRecognizers!.first!)
@@ -188,19 +196,19 @@ extension DemoViewController {
             
             print(recognizer.delegate)
             let del = recognizer.delegate!
-            if let _ = del.gestureRecognizer?(recognizer, shouldBeRequiredToFailByGestureRecognizer: recognizer) {
+            if let _ = del.gestureRecognizer?(recognizer, shouldBeRequiredToFailBy: recognizer) {
                 print("shouldBeRequiredToFailByGestureRecognizer")
             }
-            if let _ = del.gestureRecognizer?(recognizer, shouldReceivePress: UIPress()) {
+            if let _ = del.gestureRecognizer?(recognizer, shouldReceive: UIPress()) {
                 print("shouldReceivePress")
             }
-            if let _ = del.gestureRecognizer?(recognizer, shouldReceiveTouch: UITouch()) {
+            if let _ = del.gestureRecognizer?(recognizer, shouldReceive: UITouch()) {
                 print("shouldReceiveTouch")
             }
-            if let _ = del.gestureRecognizer?(recognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer: UIGestureRecognizer()) {
+            if let _ = del.gestureRecognizer?(recognizer, shouldRecognizeSimultaneouslyWith: UIGestureRecognizer()) {
                 print("shouldRecognizeSimultaneouslyWithGestureRecognizer")
             }
-            if let _ = del.gestureRecognizer?(recognizer, shouldRequireFailureOfGestureRecognizer: recognizer) {
+            if let _ = del.gestureRecognizer?(recognizer, shouldRequireFailureOf: recognizer) {
                 print("shouldRequireFailureOfGestureRecognizer")
             }
             if let _ = del.gestureRecognizerShouldBegin?(recognizer) {

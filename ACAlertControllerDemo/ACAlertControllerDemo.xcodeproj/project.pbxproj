@@ -15,6 +15,9 @@
 		D2428C8A1D1B12E1006B3036 /* ACTouchGestureRecogniser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2428C871D1B12E1006B3036 /* ACTouchGestureRecogniser.swift */; };
 		D2428C8D1D1B1314006B3036 /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2428C8B1D1B1314006B3036 /* DemoViewController.swift */; };
 		D2428C8E1D1B1314006B3036 /* DemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2428C8C1D1B1314006B3036 /* DemoViewController.xib */; };
+		D25E51E41D92870E0098CDF9 /* ACAlertControllerCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25E51E31D92870E0098CDF9 /* ACAlertControllerCore.swift */; };
+		D25E51E61D92873A0098CDF9 /* ACAlertItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25E51E51D92873A0098CDF9 /* ACAlertItem.swift */; };
+		D25E51E81D9287890098CDF9 /* ACAlertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25E51E71D9287890098CDF9 /* ACAlertAction.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +31,9 @@
 		D2428C871D1B12E1006B3036 /* ACTouchGestureRecogniser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACTouchGestureRecogniser.swift; sourceTree = "<group>"; };
 		D2428C8B1D1B1314006B3036 /* DemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
 		D2428C8C1D1B1314006B3036 /* DemoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DemoViewController.xib; sourceTree = "<group>"; };
+		D25E51E31D92870E0098CDF9 /* ACAlertControllerCore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACAlertControllerCore.swift; sourceTree = "<group>"; };
+		D25E51E51D92873A0098CDF9 /* ACAlertItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACAlertItem.swift; sourceTree = "<group>"; };
+		D25E51E71D9287890098CDF9 /* ACAlertAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACAlertAction.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +83,9 @@
 				D2428C851D1B12E1006B3036 /* ACAlertControllerAnimatedTransitioning.swift */,
 				D2428C861D1B12E1006B3036 /* ACAlertController.swift */,
 				D2428C871D1B12E1006B3036 /* ACTouchGestureRecogniser.swift */,
+				D25E51E31D92870E0098CDF9 /* ACAlertControllerCore.swift */,
+				D25E51E51D92873A0098CDF9 /* ACAlertItem.swift */,
+				D25E51E71D9287890098CDF9 /* ACAlertAction.swift */,
 			);
 			name = ACAlertController;
 			path = ../ACAlertController;
@@ -114,6 +123,7 @@
 				TargetAttributes = {
 					D2428C6E1D1B1168006B3036 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -153,7 +163,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D25E51E81D9287890098CDF9 /* ACAlertAction.swift in Sources */,
+				D25E51E61D92873A0098CDF9 /* ACAlertItem.swift in Sources */,
 				D2428C731D1B1168006B3036 /* AppDelegate.swift in Sources */,
+				D25E51E41D92870E0098CDF9 /* ACAlertControllerCore.swift in Sources */,
 				D2428C891D1B12E1006B3036 /* ACAlertController.swift in Sources */,
 				D2428C8D1D1B1314006B3036 /* DemoViewController.swift in Sources */,
 				D2428C881D1B12E1006B3036 /* ACAlertControllerAnimatedTransitioning.swift in Sources */,
@@ -268,6 +281,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = AC.ACAlertControllerDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -279,6 +293,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = AC.ACAlertControllerDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

@@ -10,37 +10,48 @@ import UIKit.UIGestureRecognizerSubclass
 
 class ACTouchGestureRecognizer: UIGestureRecognizer {
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent) {
-        super.touchesBegan(touches, withEvent: event)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
+        
+        
+        var expectedState = UIGestureRecognizerState.failed
         if touches.count != 1 {
-            state = .Failed
+            expectedState = .failed
         }
-        state = .Began
+        expectedState = .began
+
+        print("Expected state \(expectedState.rawValue)")
+        
+        super.touchesBegan(touches, with: event)
+        print("Original state \(state.rawValue)")
+//        if touches.count != 1 {
+//            state = .Failed
+//        }
+//        state = .Began
     }
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent) {
-        super.touchesEnded(touches, withEvent: event)
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent) {
+        super.touchesEnded(touches, with: event)
 
-        if state != .Failed {
-            state = .Ended
+        if state != .failed {
+            state = .ended
         }
     }
     
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent) {
-        super.touchesMoved(touches, withEvent: event)
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
+        super.touchesMoved(touches, with: event)
 
-        if state != .Failed {
-            state = .Changed
+        if state != .failed {
+            state = .changed
         }
     }
     
     override func reset() {
         super.reset()
-        state = .Possible
+        state = .possible
     }
     
-    override func touchesCancelled(touches: Set<UITouch>, withEvent event: UIEvent) {
-        super.touchesCancelled(touches, withEvent: event)
-        state = .Cancelled // forward the cancel state
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent) {
+        super.touchesCancelled(touches, with: event)
+        state = .cancelled // forward the cancel state
     }
 }

@@ -10,35 +10,12 @@ import UIKit
 
 // MARK: Protocols and Extensions
 
-public protocol ACAlertItemProtocol {
-    
-    var alertItemView: UIView { get }
-}
-
-public protocol ACAlertActionProtocol {
-    
-    func alertView(tintColor: UIColor) -> UIView
-    func highlight(isHighlited: Bool)
-    func call() -> Void
-    var enabled: Bool { get }
-}
-
-extension UIView: ACAlertItemProtocol {
-    
-    public var alertItemView: UIView { return self }
-}
-
-extension ACAlertActionProtocol {
-    
-    public var enabled: Bool { return true }
-    public func highlight(isHighlited: Bool) { }
-}
 
 // MARK: - UIAlertController compatibility
 
 extension ACAlertController {
     
-    override public var title: String? {
+    override open var title: String? {
         get { return titleLabel.text }
         set { titleLabel.text = newValue }
     }
@@ -56,65 +33,65 @@ extension ACAlertController {
 }
 
 // MARK: -
-public class ACAlertController : UIViewController {
+open class ACAlertController : UIViewController {
 
     // MARK: Properties
     
-    private(set) public var itemInsetPairs: [(ACAlertItemProtocol, UIEdgeInsets)] = []
-    public var items: [ACAlertItemProtocol] { return itemInsetPairs.map{ $0.0 } }
-    private(set) public var actions: [ACAlertActionProtocol] = []
+    fileprivate(set) open var itemInsetPairs: [(ACAlertItemProtocol, UIEdgeInsets)] = []
+    open var items: [ACAlertItemProtocol] { return itemInsetPairs.map{ $0.0 } }
+    fileprivate(set) open var actions: [ACAlertActionProtocol] = []
     
-    public var tintColor = UIColor.blueColor()
-    public var alertBackgroundColor = UIColor(white: 248/256, alpha: 1)
-    public var alertLinesColor = UIColor(red:220/256, green:220/256, blue:224/256, alpha:1.0)
-    public var backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.5)
-    public var buttonColor = UIColor.clearColor()
-    public var buttonHighlightColor = UIColor(white: 0.9, alpha: 1)
+    open var tintColor = UIColor.blue
+    open var alertBackgroundColor = UIColor.white//UIColor(white: 248/256, alpha: 1)
+    open var alertLinesColor = UIColor(red:220/256, green:220/256, blue:224/256, alpha:1.0)
+    open var backgroundColor = UIColor.black.withAlphaComponent(0.4)
+    open var buttonColor = UIColor.clear
+    open var buttonHighlightColor = UIColor(white: 0.9, alpha: 1)
     
-    public var viewMargins = UIEdgeInsets(top: 15, left: 8, bottom: 15, right: 8) // Applied to items and top/bottom margins of alert view
-    public var buttonsMargins = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8) // Applied to buttons
-    public var defaultItemsMargins = UIEdgeInsets(top: 2, left: 0, bottom: 2, right: 0) // Applied to items
+    open var viewMargins = UIEdgeInsets(top: 15, left: 8, bottom: 15, right: 8) // Applied to items and top/bottom margins of alert view
+    open var buttonsMargins = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8) // Applied to buttons
+    open var defaultItemsMargins = UIEdgeInsets(top: 2, left: 0, bottom: 2, right: 0) // Applied to items
     
-    public var cornerRadius: CGFloat = 16
-    public var defaultButtonHeight: CGFloat = 45
-    public var alertWidth: CGFloat = 270
+    open var cornerRadius: CGFloat = 16
+    open var defaultButtonHeight: CGFloat = 45
+    open var alertWidth: CGFloat = 270
     
-    public var nonMandatoryConstraintPriority: UILayoutPriority = 900 // Item's and action's constraints that could conflict with ACAlertController constraints should have priorities in [nonMandatoryConstraintPriority ..< 1000] range.
+    open var nonMandatoryConstraintPriority: UILayoutPriority = 900 // Item's and action's constraints that could conflict with ACAlertController constraints should have priorities in [nonMandatoryConstraintPriority ..< 1000] range.
 
     
     // MARK: Private properties
     
-    private var alertView: UIView!
-    private var button2actionDict: [UIView: ACAlertActionProtocol] = [:]
+    fileprivate var alertView: UIView!
+    fileprivate var button2actionDict: [UIView: ACAlertActionProtocol] = [:]
     
     // UIAlertController compatibility
-    private lazy var titleLabel: UILabel = {
+    fileprivate lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.font = UIFont.boldSystemFontOfSize(17)
+        label.font = UIFont.boldSystemFont(ofSize: 17)
         return label
     }()
     
-    private lazy var messageLabel: UILabel = {
+    fileprivate lazy var messageLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.font = UIFont.systemFontOfSize(15)
+        label.font = UIFont.systemFont(ofSize: 15)
         return label
     }()
     
     
     
     // MARK: Public methods
-    public func addItem(item: ACAlertItemProtocol, inset: UIEdgeInsets? = nil) {
-        guard isBeingPresented() == false else {
+    open func addItem(_ item: ACAlertItemProtocol, inset: UIEdgeInsets? = nil) {
+        guard isBeingPresented == false else {
             print("ACAlertController could not be modified if it is already presented")
             return
         }
         itemInsetPairs.append((item, inset ?? defaultItemsMargins))
     }
     
-    public func addAction(action: ACAlertActionProtocol) {
-        guard isBeingPresented() == false else {
+    open func addAction(_ action: ACAlertActionProtocol) {
+        guard isBeingPresented == false else {
             print("ACAlertController could not be modified if it is already presented")
             return
         }
@@ -124,48 +101,85 @@ public class ACAlertController : UIViewController {
     // MARK: UIViewController
     public init() {
         super.init(nibName: nil, bundle: nil)
-        modalPresentationStyle = .Custom
-        transitioningDelegate = self
+        modalPresentationStyle = .overFullScreen
+//        transitioningDelegate = self
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func loadView() {
+    // WWDC 2014 session 228 "A look inside presentation controllers"
+    open override func loadView() {
 
         view = UIView()
         view.backgroundColor = backgroundColor
         
-        alertView = addAlertView()
+        let v0 = UIView()
+        v0.backgroundColor = UIColor.white.withAlphaComponent(0.25)
+        v0.frame = CGRect(x: 100, y: 270, width: 300, height: 100)
+        view.addSubview(v0)
+//#F9F9D8 
+//#E9E9D4
+//#EBEBDA
+        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
+        blurView.frame = CGRect(x: 0, y: 0, width: 300, height: 100)
+        v0.addSubview(blurView)
+        
+//        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .ExtraLight))
+//        blurView.frame = CGRect(x: 100, y: 250, width: 300, height: 100)
+//        view.addSubview(blurView)
+        
+//        let v1 = UIView()
+//        v1.backgroundColor = UIColor.whiteColor()
+//        v1.frame = CGRect(x: 50, y: 0, width: 50, height: 400)
+//        blurView.addSubview(v1)
+//        
+//        let v2 = UIView()
+//        v2.backgroundColor = UIColor.whiteColor()
+//        v2.frame = CGRect(x: 150, y: 0, width: 50, height: 400)
+//        blurView.contentView.addSubview(v2)
+//        
+//        let v3 = UIView()
+//        v3.backgroundColor = UIColor.whiteColor()
+//        v3.frame = CGRect(x: 250, y: 0, width: 50, height: 400)
+//        view.addSubview(v3)
+        
+//        let v4 = UIView()
+//        v4.backgroundColor = UIColor.greenColor()
+//        v4.frame = CGRect(x: 100, y: 250, width: 100, height: 50)
+//        view.addSubview(v4)
+        
+        return
+
+//        alertView = addAlertView()
+//        return
         
         var itemInsetPairs = self.itemInsetPairs
-        if let _ = message { itemInsetPairs.insert((messageLabel, UIEdgeInsets()), atIndex: 0) }
-        if let _ = title { itemInsetPairs.insert((titleLabel, UIEdgeInsets()), atIndex: 0) }
+        if let _ = message { itemInsetPairs.insert((messageLabel, UIEdgeInsets()), at: 0) }
+        if let _ = title { itemInsetPairs.insert((titleLabel, UIEdgeInsets()), at: 0) }
         
         var (lastView, nextItemOffset) = addItems(itemInsetPairs)
         lastView = addActions(actions, lastView: lastView, nextItemOffset: nextItemOffset)
         
         if let lastView = lastView {
-            NSLayoutConstraint(item: alertView, attribute: .BottomMargin, relatedBy: .Equal, toItem: lastView, attribute: .Bottom, multiplier: 1, constant: 0).active = true
+            NSLayoutConstraint(item: alertView, attribute: .bottomMargin, relatedBy: .equal, toItem: lastView, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         }
         
         let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleRecognizer))
         recognizer.minimumPressDuration = 0.0
-        recognizer.allowableMovement = CGFloat.max
+        recognizer.allowableMovement = CGFloat.greatestFiniteMagnitude
         recognizer.cancelsTouchesInView = false
         recognizer.delegate = self
         alertView.addGestureRecognizer(recognizer)
-//        let recognizer = ACTouchGestureRecognizer(target: self, action: #selector(handleRecognizer))
-//        recognizer.cancelsTouchesInView = false
-//        alertView.addGestureRecognizer(recognizer)
-//        recognizer.cancelsTouchesInView = false
     }
     
     // MARK: Private methods
     
-    private func addAlertView() -> UIView {
+    fileprivate func addAlertView() -> UIView {
         
+//        let alertView = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
+
         let alertView = UIView()
         view.addSubview(alertView)
         
@@ -175,18 +189,33 @@ public class ACAlertController : UIViewController {
         
         alertView.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint(item: alertView, attribute: .CenterX, relatedBy: .Equal, toItem: view, attribute: .CenterX, multiplier: 1, constant: 0).active = true
+        NSLayoutConstraint(item: alertView, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
         
-        NSLayoutConstraint(item: alertView, attribute: .CenterY, relatedBy: .Equal, toItem: view, attribute: .CenterY, multiplier: 1, constant: 0).active = true
+        NSLayoutConstraint(item: alertView, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1, constant: 0).isActive = true
         
-        NSLayoutConstraint(item: alertView, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: alertWidth).active = true
+        NSLayoutConstraint(item: alertView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: alertWidth).isActive = true
         
-        NSLayoutConstraint(item: alertView, attribute: .Height, relatedBy: .GreaterThanOrEqual, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: cornerRadius * 2).active = true
+        NSLayoutConstraint(item: alertView, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: cornerRadius * 2).isActive = true
         
+        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+//        alertView.addSubview(blurView)
+        alertView.insertSubview(blurView, at: 0)
+//        blurView.opaque = false
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint(item: blurView, attribute: .centerX, relatedBy: .equal, toItem: alertView, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+        
+        NSLayoutConstraint(item: blurView, attribute: .centerY, relatedBy: .equal, toItem: alertView, attribute: .centerY, multiplier: 1, constant: 0).isActive = true
+        
+        NSLayoutConstraint(item: blurView, attribute: .width, relatedBy: .equal, toItem: alertView, attribute: .width, multiplier: 1, constant: 0).isActive = true
+        
+        NSLayoutConstraint(item: blurView, attribute: .height, relatedBy: .equal, toItem: alertView, attribute: .height, multiplier: 1, constant: 0).isActive = true
+        
+//        return blurView.contentView
         return alertView
     }
     
-    private func addHorisontalLine(topView: UIView?, nextItemOffset: CGFloat = 0) -> UIView? {
+    fileprivate func addHorisontalLine(_ topView: UIView?, nextItemOffset: CGFloat = 0) -> UIView? {
         
         guard let topView = topView else {
             assertionFailure("Error. Seems that addHorisontalLine is called for empty alert.")
@@ -199,18 +228,18 @@ public class ACAlertController : UIViewController {
         
         alertView.addSubview(lineView)
         
-        NSLayoutConstraint(item: lineView, attribute: .Leading, relatedBy: .Equal, toItem: alertView, attribute: .Leading, multiplier: 1, constant: 0).active = true
+        NSLayoutConstraint(item: lineView, attribute: .leading, relatedBy: .equal, toItem: alertView, attribute: .leading, multiplier: 1, constant: 0).isActive = true
         
-        NSLayoutConstraint(item: lineView, attribute: .Trailing, relatedBy: .Equal, toItem: alertView, attribute: .Trailing, multiplier: 1, constant: 0).active = true
+        NSLayoutConstraint(item: lineView, attribute: .trailing, relatedBy: .equal, toItem: alertView, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
         
-        NSLayoutConstraint(item: lineView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: 0.5).active = true
+        NSLayoutConstraint(item: lineView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0.5).isActive = true
         
-        NSLayoutConstraint(item: lineView, attribute: .Top, relatedBy: .Equal, toItem: topView, attribute: .Bottom, multiplier: 1, constant: nextItemOffset).active = true
+        NSLayoutConstraint(item: lineView, attribute: .top, relatedBy: .equal, toItem: topView, attribute: .bottom, multiplier: 1, constant: nextItemOffset).isActive = true
         
         return lineView
     }
     
-    private func addVerticalLine(leftView: UIView?) -> UIView? {
+    fileprivate func addVerticalLine(_ leftView: UIView?) -> UIView? {
         
         guard let leftView = leftView else {
             assertionFailure("Error. Seems that addHorisontalLine is called for empty alert.")
@@ -223,18 +252,18 @@ public class ACAlertController : UIViewController {
         
         alertView.addSubview(lineView)
         
-        NSLayoutConstraint(item: lineView, attribute: .Leading, relatedBy: .Equal, toItem: leftView, attribute: .Trailing, multiplier: 1, constant: 0).active = true
+        NSLayoutConstraint(item: lineView, attribute: .leading, relatedBy: .equal, toItem: leftView, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
         
-        NSLayoutConstraint(item: lineView, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: 0.5).active = true
+        NSLayoutConstraint(item: lineView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0.5).isActive = true
         
-        NSLayoutConstraint(item: lineView, attribute: .Top, relatedBy: .Equal, toItem: leftView, attribute: .Top, multiplier: 1, constant: 0).active = true
+        NSLayoutConstraint(item: lineView, attribute: .top, relatedBy: .equal, toItem: leftView, attribute: .top, multiplier: 1, constant: 0).isActive = true
         
-        NSLayoutConstraint(item: lineView, attribute: .Bottom, relatedBy: .Equal, toItem: alertView, attribute: .Bottom, multiplier: 1, constant: 0).active = true
+        NSLayoutConstraint(item: lineView, attribute: .bottom, relatedBy: .equal, toItem: alertView, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
         
         return lineView
     }
     
-    private func addItems(itemInsetPairs: [(ACAlertItemProtocol, UIEdgeInsets)]) -> (lastView: UIView?, nextItemOffset: CGFloat) {
+    fileprivate func addItems(_ itemInsetPairs: [(ACAlertItemProtocol, UIEdgeInsets)]) -> (lastView: UIView?, nextItemOffset: CGFloat) {
         
         var lastView: UIView?
         var nextItemOffset: CGFloat = 0
@@ -246,21 +275,21 @@ public class ACAlertController : UIViewController {
             
             alertView.addSubview(itemView)
             
-            NSLayoutConstraint(item: itemView, attribute: .Leading, relatedBy: .GreaterThanOrEqual, toItem: alertView, attribute: .LeadingMargin, multiplier: 1, constant: inset.left).active = true
+            NSLayoutConstraint(item: itemView, attribute: .leading, relatedBy: .greaterThanOrEqual, toItem: alertView, attribute: .leadingMargin, multiplier: 1, constant: inset.left).isActive = true
             
-            NSLayoutConstraint(item: itemView, attribute: .Trailing, relatedBy: .LessThanOrEqual, toItem: alertView, attribute: .TrailingMargin, multiplier: 1, constant: -inset.right).active = true
+            NSLayoutConstraint(item: itemView, attribute: .trailing, relatedBy: .lessThanOrEqual, toItem: alertView, attribute: .trailingMargin, multiplier: 1, constant: -inset.right).isActive = true
             
-            let centerX = NSLayoutConstraint(item: itemView, attribute: .CenterX, relatedBy: .Equal, toItem: alertView, attribute: .CenterXWithinMargins, multiplier: 1, constant: 0)
+            let centerX = NSLayoutConstraint(item: itemView, attribute: .centerX, relatedBy: .equal, toItem: alertView, attribute: .centerXWithinMargins, multiplier: 1, constant: 0)
             centerX.priority = nonMandatoryConstraintPriority
-            centerX.active = true
+            centerX.isActive = true
             
             NSLayoutConstraint(item: itemView,
-                               attribute: .Top,
-                               relatedBy: .Equal,
+                               attribute: .top,
+                               relatedBy: .equal,
                                toItem: lastView ?? alertView,
-                               attribute: lastView == nil ? .TopMargin : .Bottom,
+                               attribute: lastView == nil ? .topMargin : .bottom,
                                multiplier: 1,
-                               constant: nextItemOffset + inset.top).active = true
+                               constant: nextItemOffset + inset.top).isActive = true
             
             lastView = itemView
             nextItemOffset = inset.bottom
@@ -269,7 +298,7 @@ public class ACAlertController : UIViewController {
         return (lastView, nextItemOffset)
     }
     
-    private func addActions(actions: [ACAlertActionProtocol], lastView: UIView?, nextItemOffset: CGFloat = 0) -> UIView? {
+    fileprivate func addActions(_ actions: [ACAlertActionProtocol], lastView: UIView?, nextItemOffset: CGFloat = 0) -> UIView? {
         
         var lastView = lastView
         
@@ -283,9 +312,9 @@ public class ACAlertController : UIViewController {
             if button1.bounds.width < maxReducedWidth && button2.bounds.width < maxReducedWidth
             {
                 lastView = addHorisontalLine(lastView, nextItemOffset: nextItemOffset)
-                addButton(button1, lastView: lastView, leadingAttr: .Leading, trailingAttr: .CenterX)
-                addButton(button2, lastView: lastView, leadingAttr: .CenterX, trailingAttr: .Trailing)
-                NSLayoutConstraint(item: button1, attribute: .Bottom, relatedBy: .Equal, toItem: button2, attribute: .Bottom, multiplier: 1, constant: 0).active = true
+                addButton(button1, lastView: lastView, leadingAttr: .leading, trailingAttr: .centerX)
+                addButton(button2, lastView: lastView, leadingAttr: .centerX, trailingAttr: .trailing)
+                NSLayoutConstraint(item: button1, attribute: .bottom, relatedBy: .equal, toItem: button2, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
                 addVerticalLine(button1)
                 lastView = button1
             }
@@ -300,7 +329,7 @@ public class ACAlertController : UIViewController {
         return lastView
     }
     
-    private func addWideActions(actions: [ACAlertActionProtocol], lastView: UIView?, nextItemOffset: CGFloat = 0) -> UIView? {
+    fileprivate func addWideActions(_ actions: [ACAlertActionProtocol], lastView: UIView?, nextItemOffset: CGFloat = 0) -> UIView? {
         
         var lastView = lastView
         var nextItemOffset = nextItemOffset
@@ -317,75 +346,75 @@ public class ACAlertController : UIViewController {
         return lastView
     }
     
-    private func buttonForAction(action: ACAlertActionProtocol) -> UIView {
+    fileprivate func buttonForAction(_ action: ACAlertActionProtocol) -> UIView {
         
         let actionView = action.alertView(tintColor)
         actionView.translatesAutoresizingMaskIntoConstraints = false
-        actionView.userInteractionEnabled = false
+        actionView.isUserInteractionEnabled = false
         
         let button = UIView()
         button.layoutMargins = buttonsMargins
         button.addSubview(actionView)
         button.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint(item: actionView, attribute: .Leading, relatedBy: .GreaterThanOrEqual, toItem: button, attribute: .LeadingMargin, multiplier: 1, constant: 0).active = true
+        NSLayoutConstraint(item: actionView, attribute: .leading, relatedBy: .greaterThanOrEqual, toItem: button, attribute: .leadingMargin, multiplier: 1, constant: 0).isActive = true
         
-        NSLayoutConstraint(item: actionView, attribute: .CenterX, relatedBy: .Equal, toItem: button, attribute: .CenterXWithinMargins, multiplier: 1, constant: 0).active = true
+        NSLayoutConstraint(item: actionView, attribute: .centerX, relatedBy: .equal, toItem: button, attribute: .centerXWithinMargins, multiplier: 1, constant: 0).isActive = true
         
-        NSLayoutConstraint(item: actionView, attribute: .Top, relatedBy: .GreaterThanOrEqual, toItem: button, attribute: .TopMargin, multiplier: 1, constant: 0).active = true
+        NSLayoutConstraint(item: actionView, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: button, attribute: .topMargin, multiplier: 1, constant: 0).isActive = true
         
-        NSLayoutConstraint(item: actionView, attribute: .CenterY, relatedBy: .Equal, toItem: button, attribute: .CenterYWithinMargins, multiplier: 1, constant: 0).active = true
+        NSLayoutConstraint(item: actionView, attribute: .centerY, relatedBy: .equal, toItem: button, attribute: .centerYWithinMargins, multiplier: 1, constant: 0).isActive = true
         
         button2actionDict[button] = action
         
         return button
     }
     
-    private func addButton(button: UIView, lastView: UIView?, leadingAttr: NSLayoutAttribute = .Leading, trailingAttr: NSLayoutAttribute = .Trailing) {
+    fileprivate func addButton(_ button: UIView, lastView: UIView?, leadingAttr: NSLayoutAttribute = .leading, trailingAttr: NSLayoutAttribute = .trailing) {
         
         alertView.addSubview(button)
         
-        NSLayoutConstraint(item: button, attribute: .Leading, relatedBy: .Equal, toItem: alertView, attribute: leadingAttr, multiplier: 1, constant: 0).active = true
+        NSLayoutConstraint(item: button, attribute: .leading, relatedBy: .equal, toItem: alertView, attribute: leadingAttr, multiplier: 1, constant: 0).isActive = true
         
-        NSLayoutConstraint(item: button, attribute: .Trailing, relatedBy: .Equal, toItem: alertView, attribute: trailingAttr, multiplier: 1, constant: 0).active = true
+        NSLayoutConstraint(item: button, attribute: .trailing, relatedBy: .equal, toItem: alertView, attribute: trailingAttr, multiplier: 1, constant: 0).isActive = true
         
         NSLayoutConstraint(item: button,
-                           attribute: .Top,
-                           relatedBy: .Equal,
+                           attribute: .top,
+                           relatedBy: .equal,
                            toItem: lastView ?? alertView,
-                           attribute: lastView == nil ? .TopMargin : .Bottom,
+                           attribute: lastView == nil ? .topMargin : .bottom,
                            multiplier: 1,
-                           constant: 0).active = true
+                           constant: 0).isActive = true
         
-        let height = NSLayoutConstraint(item: button, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: defaultButtonHeight)
+        let height = NSLayoutConstraint(item: button, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: defaultButtonHeight)
         height.priority = nonMandatoryConstraintPriority
-        height.active = true
+        height.isActive = true
     }
 
-    private func callAction(action: ACAlertActionProtocol) {
+    fileprivate func callAction(_ action: ACAlertActionProtocol) {
 
-        presentingViewController?.dismissViewControllerAnimated(true, completion: {
-            dispatch_async(dispatch_get_main_queue(), {
+        presentingViewController?.dismiss(animated: true, completion: {
+            DispatchQueue.main.async(execute: {
                 action.call()
             })
         })
     }
     
 // MARK: Touch recogniser
-    @objc private func handleRecognizer(recognizer: ACTouchGestureRecognizer) {
+    @objc fileprivate func handleRecognizer(_ recognizer: ACTouchGestureRecognizer) {
         
         print(recognizer.state.rawValue)
-        let point = recognizer.locationInView(alertView)
+        let point = recognizer.location(in: alertView)
         
         for (button, action) in button2actionDict
         {
             let isActive = button.frame.contains(point) && action.enabled
-            let isHighlighted = isActive && (recognizer.state == .Began || recognizer.state == .Changed)
+            let isHighlighted = isActive && (recognizer.state == .began || recognizer.state == .changed)
             
             button.backgroundColor = isHighlighted ? buttonHighlightColor : buttonColor
             action.highlight(isHighlighted)
             
-            if isActive && recognizer.state == .Ended {
+            if isActive && recognizer.state == .ended {
                 callAction(action)
             }
         }
@@ -394,11 +423,13 @@ public class ACAlertController : UIViewController {
 
 extension ACAlertController: UIViewControllerTransitioningDelegate {
 
-    public func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return nil
         return ACAlertControllerAnimatedTransitioning(appearing: true)
     }
     
-    public func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return nil
         return ACAlertControllerAnimatedTransitioning(appearing: false)
     }
 }
@@ -406,7 +437,7 @@ extension ACAlertController: UIViewControllerTransitioningDelegate {
 extension ACAlertController: UIGestureRecognizerDelegate {
     
     // note: returning YES is guaranteed to allow simultaneous recognition. returning NO is not guaranteed to prevent simultaneous recognition, as the other gesture's delegate may return YES
-    public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
 //        print("shouldRecognizeSimultaneouslyWithGestureRecognizer \n\(gestureRecognizer)\n\(otherGestureRecognizer)")
         return true
     }
@@ -433,57 +464,3 @@ extension ACAlertController: UIGestureRecognizerDelegate {
 
 }
 
-// MARK: -
-
-public class ACAlertAction<T:UIView>: ACAlertActionProtocol {
-    
-    public let alertView: T
-    public let handler: ((ACAlertAction<T>) -> Void)?
-    
-    public init(view: T, handler: ((ACAlertAction<T>) -> Void)?) {
-        self.alertView = view
-        self.handler = handler
-    }
-    
-    public func alertView(tintColor: UIColor) -> UIView {
-        return alertView
-    }
-    
-    public func call() {
-        handler?(self)
-    }
-}
-
-public class ACAlertActionNative: ACAlertActionProtocol {
-    
-    public let handler: ((ACAlertActionNative) -> Void)?
-    
-    public let title: String?
-    public let style: UIAlertActionStyle
-    public var enabled: Bool = true
-    
-    public init(title: String?, style: UIAlertActionStyle, handler: ((ACAlertActionNative) -> Void)?) {
-        self.title = title
-        self.style = style
-        self.handler = handler
-    }
-    
-    public func alertView(tintColor: UIColor) -> UIView {
-        let label = UILabel()
-        
-        let fontSize: CGFloat = 17
-        label.font = style == .Cancel ? UIFont.boldSystemFontOfSize(fontSize) :  UIFont.systemFontOfSize(fontSize)
-        label.minimumScaleFactor = 0.5
-        
-        let normalColor = enabled ? tintColor : UIColor.grayColor()
-        label.textColor = style == .Destructive ? UIColor.redColor() : normalColor
-        
-        label.text = title
-        
-        return label
-    }
-    
-    public func call() {
-        handler?(self)
-    }
-}

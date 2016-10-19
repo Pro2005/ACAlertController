@@ -10,7 +10,7 @@ import UIKit
 
 class ACAlertControllerAnimatedTransitioning : NSObject, UIViewControllerAnimatedTransitioning {
     
-    let animationDuration : NSTimeInterval = 0.16
+    let animationDuration : TimeInterval = 0.16
     let appearing : Bool
     
     init(appearing: Bool) {
@@ -18,29 +18,29 @@ class ACAlertControllerAnimatedTransitioning : NSObject, UIViewControllerAnimate
         super.init()
     }
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return animationDuration
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        let containerView = transitionContext.containerView()!
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+        let containerView = transitionContext.containerView
         
         if appearing {
-            let presentationView = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!.view
-            presentationView.frame = containerView.bounds
-            containerView.addSubview(presentationView)
-            presentationView.alpha = 0
-            UIView.animateWithDuration(animationDuration, delay: 0, options: .CurveLinear, animations: { () -> Void in
-                presentationView.alpha = 1
+            let presentationView = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!.view
+            presentationView?.frame = containerView.bounds
+            containerView.addSubview(presentationView!)
+            presentationView?.alpha = 0
+            UIView.animate(withDuration: animationDuration, delay: 0, options: .curveLinear, animations: { () -> Void in
+                presentationView?.alpha = 1
             }) { (finished) -> Void in
                 transitionContext.completeTransition(true)
             }
         } else {
-            let presentationView = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)!.view
-            UIView.animateWithDuration(animationDuration, delay: 0, options: .CurveLinear, animations: { () -> Void in
-                presentationView.alpha = 0
+            let presentationView = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from)!.view
+            UIView.animate(withDuration: animationDuration, delay: 0, options: .curveLinear, animations: { () -> Void in
+                presentationView?.alpha = 0
             }) { (finished) -> Void in
-                presentationView.removeFromSuperview()
+                presentationView?.removeFromSuperview()
                 transitionContext.completeTransition(true)
             }
         }
