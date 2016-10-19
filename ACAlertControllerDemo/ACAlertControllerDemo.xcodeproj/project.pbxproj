@@ -11,7 +11,7 @@
 		D2428C7A1D1B1168006B3036 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D2428C791D1B1168006B3036 /* Assets.xcassets */; };
 		D2428C7D1D1B1168006B3036 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2428C7B1D1B1168006B3036 /* LaunchScreen.storyboard */; };
 		D2428C881D1B12E1006B3036 /* ACAlertControllerAnimatedTransitioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2428C851D1B12E1006B3036 /* ACAlertControllerAnimatedTransitioning.swift */; };
-		D2428C891D1B12E1006B3036 /* ACAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2428C861D1B12E1006B3036 /* ACAlertController.swift */; };
+		D2428C891D1B12E1006B3036 /* ACAlertController0.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2428C861D1B12E1006B3036 /* ACAlertController0.swift */; };
 		D2428C8A1D1B12E1006B3036 /* ACTouchGestureRecogniser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2428C871D1B12E1006B3036 /* ACTouchGestureRecogniser.swift */; };
 		D2428C8D1D1B1314006B3036 /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2428C8B1D1B1314006B3036 /* DemoViewController.swift */; };
 		D2428C8E1D1B1314006B3036 /* DemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2428C8C1D1B1314006B3036 /* DemoViewController.xib */; };
@@ -27,7 +27,7 @@
 		D2428C7C1D1B1168006B3036 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D2428C7E1D1B1168006B3036 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D2428C851D1B12E1006B3036 /* ACAlertControllerAnimatedTransitioning.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACAlertControllerAnimatedTransitioning.swift; sourceTree = "<group>"; };
-		D2428C861D1B12E1006B3036 /* ACAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACAlertController.swift; sourceTree = "<group>"; };
+		D2428C861D1B12E1006B3036 /* ACAlertController0.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACAlertController0.swift; sourceTree = "<group>"; };
 		D2428C871D1B12E1006B3036 /* ACTouchGestureRecogniser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACTouchGestureRecogniser.swift; sourceTree = "<group>"; };
 		D2428C8B1D1B1314006B3036 /* DemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
 		D2428C8C1D1B1314006B3036 /* DemoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DemoViewController.xib; sourceTree = "<group>"; };
@@ -80,8 +80,9 @@
 		D2428C841D1B12E1006B3036 /* ACAlertController */ = {
 			isa = PBXGroup;
 			children = (
+				D2F891C01DB7C219006B13AC /* Core */,
 				D2428C851D1B12E1006B3036 /* ACAlertControllerAnimatedTransitioning.swift */,
-				D2428C861D1B12E1006B3036 /* ACAlertController.swift */,
+				D2428C861D1B12E1006B3036 /* ACAlertController0.swift */,
 				D2428C871D1B12E1006B3036 /* ACTouchGestureRecogniser.swift */,
 				D25E51E31D92870E0098CDF9 /* ACAlertControllerCore.swift */,
 				D25E51E51D92873A0098CDF9 /* ACAlertItem.swift */,
@@ -89,6 +90,13 @@
 			);
 			name = ACAlertController;
 			path = ../ACAlertController;
+			sourceTree = "<group>";
+		};
+		D2F891C01DB7C219006B13AC /* Core */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Core;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -167,7 +175,7 @@
 				D25E51E61D92873A0098CDF9 /* ACAlertItem.swift in Sources */,
 				D2428C731D1B1168006B3036 /* AppDelegate.swift in Sources */,
 				D25E51E41D92870E0098CDF9 /* ACAlertControllerCore.swift in Sources */,
-				D2428C891D1B12E1006B3036 /* ACAlertController.swift in Sources */,
+				D2428C891D1B12E1006B3036 /* ACAlertController0.swift in Sources */,
 				D2428C8D1D1B1314006B3036 /* DemoViewController.swift in Sources */,
 				D2428C881D1B12E1006B3036 /* ACAlertControllerAnimatedTransitioning.swift in Sources */,
 				D2428C8A1D1B12E1006B3036 /* ACTouchGestureRecogniser.swift in Sources */,

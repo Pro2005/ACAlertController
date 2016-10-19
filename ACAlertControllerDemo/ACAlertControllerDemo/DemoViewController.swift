@@ -51,7 +51,7 @@ extension DemoViewController {
     }
     
     @IBAction func newOne() {
-        let alert = ACAlertController(title: "Title", message: "Are you sure you want to Sign Out?")
+        let alert = ACAlertController0(title: "Title", message: "Are you sure you want to Sign Out?")
 
         alert.addItem(createLabel("Short text"))
         alert.addItem(UIImageView(image: UIImage(named: "Checklist Icon OK")))

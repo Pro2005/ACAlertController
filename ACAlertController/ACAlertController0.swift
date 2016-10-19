@@ -13,7 +13,7 @@ import UIKit
 
 // MARK: - UIAlertController compatibility
 
-extension ACAlertController {
+extension ACAlertController0 {
     
     override open var title: String? {
         get { return titleLabel.text }
@@ -33,7 +33,7 @@ extension ACAlertController {
 }
 
 // MARK: -
-open class ACAlertController : UIViewController {
+open class ACAlertController0 : UIViewController {
 
     // MARK: Properties
     
@@ -419,20 +419,18 @@ open class ACAlertController : UIViewController {
     }
 }
 
-extension ACAlertController: UIViewControllerTransitioningDelegate {
+extension ACAlertController0: UIViewControllerTransitioningDelegate {
 
     public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return nil
         return ACAlertControllerAnimatedTransitioning(appearing: true)
     }
     
     public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return nil
         return ACAlertControllerAnimatedTransitioning(appearing: false)
     }
 }
 
-extension ACAlertController: UIGestureRecognizerDelegate {
+extension ACAlertController0: UIGestureRecognizerDelegate {
     
     // note: returning YES is guaranteed to allow simultaneous recognition. returning NO is not guaranteed to prevent simultaneous recognition, as the other gesture's delegate may return YES
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
