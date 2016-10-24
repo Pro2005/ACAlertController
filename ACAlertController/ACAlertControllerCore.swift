@@ -23,7 +23,7 @@ protocol ACAlertListViewProtocol {
 }
 
 protocol ACAlertListViewProvider {
-    func alertView(items : [(ACAlertItemProtocol, UIEdgeInsets?)], width: CGFloat) -> ACAlertListViewProtocol
+    func alertView(items : [(ACAlertItemProtocol, UIEdgeInsets)], width: CGFloat) -> ACAlertListViewProtocol
     func alertView(actions : [(ACAlertActionProtocol, UIEdgeInsets?)], width: CGFloat) -> ACAlertListViewProtocol
 }
 
@@ -39,14 +39,67 @@ class ACAlertListView: ACAlertListViewProtocol {
 }
 
 class TabledItemsViewProvider: NSObject, ACAlertListViewProvider {
-    func alertView(items: [(ACAlertItemProtocol, UIEdgeInsets?)], width: CGFloat) -> ACAlertListViewProtocol {
-        return ACAlertListView(height: CGFloat(items.count) * 30, color: UIColor.green)
+    func alertView(items: [(ACAlertItemProtocol, UIEdgeInsets)], width: CGFloat) -> ACAlertListViewProtocol {
+        let views = items.map { (item, insets) in return (item.alertItemView, insets) }
+        return ACTableAlertListView(views: views)
+//        return ACAlertListView(height: CGFloat(items.count) * 30, color: UIColor.green)
     }
     func alertView(actions: [(ACAlertActionProtocol, UIEdgeInsets?)], width: CGFloat) -> ACAlertListViewProtocol {
         return ACAlertListView(height: CGFloat(actions.count) * 45, color: UIColor.orange)
     }
 }
 
+class ACTableAlertListView: UITableView, ACAlertListViewProtocol, UITableViewDataSource {
+    
+    let cells: [UITableViewCell]
+    var view: UIView { return self }
+    var contentHeight: CGFloat { return contentSize.height }
+    
+    init(views: [(UIView, UIEdgeInsets)]) {
+
+        cells = views.map{ (view, insets) -> UITableViewCell in
+            let cell = UITableViewCell()
+            cell.contentView.layoutMargins = insets
+//            cell.textLabel?.text = "GGG!"
+            cell.contentView.addSubview(view)
+            cell.contentView.backgroundColor = UIColor.green
+            view.translatesAutoresizingMaskIntoConstraints = false
+            ACTableAlertListView.setContent(view: cell.contentView, subview: view)
+            
+            return cell
+        }
+        super.init(frame: .zero, style: .plain)
+        dataSource = self
+
+        self.rowHeight = UITableViewAutomaticDimension
+        self.estimatedRowHeight = 50
+        reloadData()
+        self.layoutSubviews()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return cells.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = cells[indexPath.row]
+//        NSLayoutConstraint(item: cell.contentView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 200).isActive = true
+        return cell
+    }
+    
+    class func setContent(view: UIView, subview: UIView) {
+        
+        NSLayoutConstraint(item: view, attribute: .leftMargin, relatedBy: .lessThanOrEqual, toItem: subview, attribute: .left, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: view, attribute: .rightMargin, relatedBy: .greaterThanOrEqual, toItem: subview, attribute: .right, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: view, attribute: .centerXWithinMargins, relatedBy: .equal, toItem: subview, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: view, attribute: .topMargin, relatedBy: .equal, toItem: subview, attribute: .top, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: view, attribute: .bottomMargin, relatedBy: .equal, toItem: subview, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+    }
+}
 //    var items: [(ACAlertItemProtocol, UIEdgeInsets)] = []
 //    let tableView = UITableView()
 //    let cellName = "Cell"
@@ -91,7 +144,7 @@ class TabledItemsViewProvider: NSObject, ACAlertListViewProvider {
 
 class ACAlertControllerBase : UIViewController{
 
-    fileprivate(set) open var items: [(ACAlertItemProtocol, UIEdgeInsets?)] = []
+    fileprivate(set) open var items: [(ACAlertItemProtocol, UIEdgeInsets)] = []
     fileprivate(set) open var actions: [(ACAlertActionProtocol, UIEdgeInsets?)] = []
     
 //    open var items: [ACAlertItemProtocol] { return items.map{ $0.0 } }
@@ -100,6 +153,7 @@ class ACAlertControllerBase : UIViewController{
     open var backgroundColor = UIColor.brown//UIColor.white.withAlphaComponent(0.25)
     
     open var viewMargins = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)//UIEdgeInsets(top: 15, bottom: 15)
+    open var defaultItemsMargins = UIEdgeInsets(top: 2, left: 0, bottom: 2, right: 0) // Applied to items
 //    open var itemsMargins = UIEdgeInsets(top: 4, bottom: 4)
 //    open var actionsMargins = UIEdgeInsets(top: 4, bottom: 4)
     
@@ -135,7 +189,7 @@ class ACAlertControllerBase : UIViewController{
             print("ACAlertController could not be modified if it is already presented")
             return
         }
-        items.append((item, inset))
+        items.append((item, inset ?? defaultItemsMargins))
     }
     
     open func addAction(_ action: ACAlertActionProtocol, inset: UIEdgeInsets? = nil) {
