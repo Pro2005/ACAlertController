@@ -10,6 +10,8 @@ import UIKit
 
 class DemoViewController: UIViewController {
 
+    var alert: ACAlertControllerBase!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -51,54 +53,90 @@ extension DemoViewController {
     }
     
     @IBAction func newOne() {
-        let alert = ACAlertController0(title: "Title", message: "Are you sure you want to Sign Out?")
-
-        alert.addItem(createLabel("Short text"))
-        alert.addItem(UIImageView(image: UIImage(named: "Checklist Icon OK")))
-        alert.addItem(UIImageView(image: UIImage(named: "Import Icon")))
         
-        var margins1 = alert.defaultItemsMargins
-        margins1.bottom = 0
-        var margins2 = alert.defaultItemsMargins
-        margins2.top = 0
-        margins2.right = 20
-        alert.addItem(createTextField(), inset: margins1)
-        alert.addItem(createTextField(), inset: margins2)
-        alert.addItem(createTextField())
-        
-        alert.addItem(createLabel("Short text", textColor: UIColor.magenta, color: UIColor.yellow))
-        alert.addItem(createLabel("Some not very short but quite long text here. Hello world!",
-            textColor: UIColor.cyan, color: UIColor.orange))
-        alert.addItem(createLabel("Some not very short but quite long text here. Hello world!",
-            textColor: UIColor.magenta, color: UIColor.yellow))
-        
-        alert.addAction(ACAlertAction(view: UIImageView(image: UIImage(named: "Details Icon")), handler: { (_) in
-            print("Action Details")
-        }))
-        let historyImageView = UIImageView(image: UIImage(named: "Checklist Icon OK"))
-        historyImageView.setContentCompressionResistancePriority(995, for: .vertical)
-        alert.addAction(ACAlertAction(view: historyImageView, handler: { (_) in
-            print("Action History")
-        }))
-        
-        let action = ACAlertActionNative(title: "Disabled title", style: .default, handler: { (_) in
-            print("Disabled")
-        })
-        action.enabled = false
-        alert.addAction(action)
-
-        alert.addAction(ACAlertActionNative(title: "A", style: .default, handler: { (_) in
-            print("Default")
-        }))
-        alert.addAction(ACAlertActionNative(title: "C", style: .cancel, handler: { (_) in
-            print("Cancel")
-        }))
-        alert.addAction(ACAlertActionNative(title: "Destructive title", style: .destructive, handler: { (_) in
-            print("Destructive")
-        }))
-        
-        present(alert, animated: true){
+        if alert == nil {
+            alert = ACAlertControllerBase()
+            alert.addItem(UIImageView(image: UIImage(named: "Checklist Icon OK")))
+            alert.addItem(UIImageView(image: UIImage(named: "Checklist Icon OK")))
+            alert.addItem(UIImageView(image: UIImage(named: "Checklist Icon OK")))
+            
+            let action = ACAlertActionNative(title: "Disabled title", style: .default, handler: { (_) in
+                print("Disabled")
+            })
+            alert.addAction(action)
+            alert.addAction(action)
+            alert.addAction(action)
+//            alert.view.layoutSubviews()
+//            view.addSubview(alert.view)
+//            alert.view.layoutSubviews()
+//            alert.view.frame = CGRect(x: 100, y: 100, width: 200, height: 400)
+//            alert.view.frame = CGRect(x: 100, y: 100, width: alert.view.frame.width, height: alert.view.frame.height)
+        } else {
+//            alert.addItem(UIImageView(image: UIImage(named: "Checklist Icon OK")))
+            
+//            let action = ACAlertActionNative(title: "Disabled title", style: .default, handler: { (_) in
+//                print("Disabled")
+//            })
+//            alert.addAction(action)
+//            view.addSubview(alert.view)
+//            alert.view.frame = CGRect(x: 100, y: 100, width: 200, height: 400)
+//            alert.view.frame = CGRect(x: 100, y: 100, width: alert.view.frame.width, height: alert.view.frame.height)
+            view.addSubview(alert.view)
+            NSLayoutConstraint(item: view, attribute: .centerX, relatedBy: .equal, toItem: alert.view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+            NSLayoutConstraint(item: view, attribute: .centerY, relatedBy: .equal, toItem: alert.view, attribute: .centerY, multiplier: 1, constant: 0).isActive = true
+            view.layoutSubviews()
+            print(alert.view.frame)
         }
+        
+        
+//        let alert = ACAlertController(title: "Title", message: "Are you sure you want to Sign Out?")
+//
+//        alert.addItem(createLabel("Short text"))
+//        alert.addItem(UIImageView(image: UIImage(named: "Checklist Icon OK")))
+//        alert.addItem(UIImageView(image: UIImage(named: "Import Icon")))
+//        
+//        var margins1 = alert.defaultItemsMargins
+//        margins1.bottom = 0
+//        var margins2 = alert.defaultItemsMargins
+//        margins2.top = 0
+//        margins2.right = 20
+//        alert.addItem(createTextField(), inset: margins1)
+//        alert.addItem(createTextField(), inset: margins2)
+//        alert.addItem(createTextField())
+//        
+//        alert.addItem(createLabel("Short text", textColor: UIColor.magenta, color: UIColor.yellow))
+//        alert.addItem(createLabel("Some not very short but quite long text here. Hello world!",
+//            textColor: UIColor.cyan, color: UIColor.orange))
+//        alert.addItem(createLabel("Some not very short but quite long text here. Hello world!",
+//            textColor: UIColor.magenta, color: UIColor.yellow))
+//        
+//        alert.addAction(ACAlertAction(view: UIImageView(image: UIImage(named: "Details Icon")), handler: { (_) in
+//            print("Action Details")
+//        }))
+//        let historyImageView = UIImageView(image: UIImage(named: "Checklist Icon OK"))
+//        historyImageView.setContentCompressionResistancePriority(995, for: .vertical)
+//        alert.addAction(ACAlertAction(view: historyImageView, handler: { (_) in
+//            print("Action History")
+//        }))
+//        
+//        let action = ACAlertActionNative(title: "Disabled title", style: .default, handler: { (_) in
+//            print("Disabled")
+//        })
+//        action.enabled = false
+//        alert.addAction(action)
+//
+//        alert.addAction(ACAlertActionNative(title: "A", style: .default, handler: { (_) in
+//            print("Default")
+//        }))
+//        alert.addAction(ACAlertActionNative(title: "C", style: .cancel, handler: { (_) in
+//            print("Cancel")
+//        }))
+//        alert.addAction(ACAlertActionNative(title: "Destructive title", style: .destructive, handler: { (_) in
+//            print("Destructive")
+//        }))
+//        
+//        present(alert, animated: true){
+//        }
     }
     @IBAction func newTwo() {
     }
@@ -130,7 +168,7 @@ extension DemoViewController {
         alertView?.frame.origin = CGPoint(x: 100, y: 270)
         view.addSubview(alertView!)
         
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(1000000) / Double(NSEC_PER_SEC)) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(10) / Double(NSEC_PER_SEC)) {
             print("ggg")
             alertView?.frame.origin = CGPoint(x: 100, y: 270)
         }
@@ -145,7 +183,11 @@ extension DemoViewController {
         alertController.addAction(noAction)
         alertController.addAction(yesAction)
         alertController.addAction(destrAction)
-        alertController.addAction(disableAction)
+//        alertController.addAction(disableAction)
+//        for _ in 1...15 {
+//            let noAction = UIAlertAction(title: "No", style: .destructive){ (action) in print("No") }
+//            alertController.addAction(noAction)
+//        }
         disableAction.isEnabled = false
 //        noAction.enabled = false
 //        yesAction.enabled = false
@@ -170,6 +212,14 @@ extension DemoViewController {
             textField.enablesReturnKeyAutomatically = true
         }
         
+        for i in 1...30 {
+            alertController.addTextField { (textField) -> Void in
+                textField.placeholder = "Name \(i)"
+                textField.autocapitalizationType = .words
+                textField.returnKeyType = .done
+                textField.enablesReturnKeyAutomatically = true
+            }
+        }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel){ (action) in }
         alertController.addAction(cancelAction)
         
@@ -180,41 +230,47 @@ extension DemoViewController {
         }
         alertController.addAction(submitAction)
         
+        for _ in 1...15 {
+            let noAction = UIAlertAction(title: "No", style: .destructive){ (action) in print("No") }
+            alertController.addAction(noAction)
+        }
+        
         self.present(alertController, animated: true) {
 //            print(alertController.view.performSelector("recursiveDescription"))
 //            print(alertController.view.gestureRecognizers)
 //            alertController.view.removeGestureRecognizer(alertController.view.gestureRecognizers!.first!)
-            let recognizer = alertController.view.gestureRecognizers!.first! as! UILongPressGestureRecognizer
-            print(recognizer)
-            print(recognizer.minimumPressDuration)
-            print(recognizer.numberOfTapsRequired)
-            print(recognizer.numberOfTouchesRequired)
-            print(recognizer.allowableMovement)
-            print(recognizer.cancelsTouchesInView)
-            print(recognizer.delaysTouchesBegan)
-            print(recognizer.delaysTouchesEnded)
-            
-            print(recognizer.delegate)
-            let del = recognizer.delegate!
-            if let _ = del.gestureRecognizer?(recognizer, shouldBeRequiredToFailBy: recognizer) {
-                print("shouldBeRequiredToFailByGestureRecognizer")
-            }
-            if let _ = del.gestureRecognizer?(recognizer, shouldReceive: UIPress()) {
-                print("shouldReceivePress")
-            }
-            if let _ = del.gestureRecognizer?(recognizer, shouldReceive: UITouch()) {
-                print("shouldReceiveTouch")
-            }
-            if let _ = del.gestureRecognizer?(recognizer, shouldRecognizeSimultaneouslyWith: UIGestureRecognizer()) {
-                print("shouldRecognizeSimultaneouslyWithGestureRecognizer")
-            }
-            if let _ = del.gestureRecognizer?(recognizer, shouldRequireFailureOf: recognizer) {
-                print("shouldRequireFailureOfGestureRecognizer")
-            }
-            if let _ = del.gestureRecognizerShouldBegin?(recognizer) {
-                print("gestureRecognizerShouldBegin")
-            }
-        
+
+//            let recognizer = alertController.view.gestureRecognizers!.first! as! UILongPressGestureRecognizer
+//            print(recognizer)
+//            print(recognizer.minimumPressDuration)
+//            print(recognizer.numberOfTapsRequired)
+//            print(recognizer.numberOfTouchesRequired)
+//            print(recognizer.allowableMovement)
+//            print(recognizer.cancelsTouchesInView)
+//            print(recognizer.delaysTouchesBegan)
+//            print(recognizer.delaysTouchesEnded)
+//            
+//            print(recognizer.delegate)
+//            let del = recognizer.delegate!
+//            if let _ = del.gestureRecognizer?(recognizer, shouldBeRequiredToFailBy: recognizer) {
+//                print("shouldBeRequiredToFailByGestureRecognizer")
+//            }
+//            if let _ = del.gestureRecognizer?(recognizer, shouldReceive: UIPress()) {
+//                print("shouldReceivePress")
+//            }
+//            if let _ = del.gestureRecognizer?(recognizer, shouldReceive: UITouch()) {
+//                print("shouldReceiveTouch")
+//            }
+//            if let _ = del.gestureRecognizer?(recognizer, shouldRecognizeSimultaneouslyWith: UIGestureRecognizer()) {
+//                print("shouldRecognizeSimultaneouslyWithGestureRecognizer")
+//            }
+//            if let _ = del.gestureRecognizer?(recognizer, shouldRequireFailureOf: recognizer) {
+//                print("shouldRequireFailureOfGestureRecognizer")
+//            }
+//            if let _ = del.gestureRecognizerShouldBegin?(recognizer) {
+//                print("gestureRecognizerShouldBegin")
+//            }
+//        
         
         }
     }
