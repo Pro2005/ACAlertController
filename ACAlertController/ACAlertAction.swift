@@ -34,24 +34,24 @@ extension ACAlertActionProtocol {
 }
 // MARK: -
 
-//open class ACAlertAction<T:UIView>: ACAlertActionProtocol {
-//    
-//    open let alertView: T
-//    open let handler: ((ACAlertAction<T>) -> Void)?
-//    
-//    public init(view: T, handler: ((ACAlertAction<T>) -> Void)?) {
-//        self.alertView = view
-//        self.handler = handler
-//    }
-//    
+open class ACAlertAction: ACAlertActionProtocolBase {
+    
+    open let alertView: UIView
+    open let handler: ((ACAlertAction) -> Void)?
+    
+    public init(view: UIView, handler: ((ACAlertAction) -> Void)?) {
+        self.alertView = view
+        self.handler = handler
+    }
+    
 //    open func alertView(_ tintColor: UIColor) -> UIView {
 //        return alertView
 //    }
-//    
-//    open func call() {
-//        handler?(self)
-//    }
-//}
+    
+    open func call() {
+        handler?(self)
+    }
+}
 
 open class ACAlertActionNative: ACAlertActionProtocolBase {
     

@@ -24,7 +24,7 @@ protocol ACAlertListViewProtocol {
 
 protocol ACAlertListViewProvider {
     func alertView(items : [(ACAlertItemProtocol, UIEdgeInsets)], width: CGFloat) -> ACAlertListViewProtocol
-    func alertView(actions : [(ACAlertActionProtocolBase, UIEdgeInsets?)], width: CGFloat) -> ACAlertListViewProtocol
+    func alertView(actions : [(ACAlertActionProtocolBase, UIEdgeInsets)], width: CGFloat) -> ACAlertListViewProtocol
 }
 
 class ACAlertListView: ACAlertListViewProtocol {
@@ -45,8 +45,11 @@ class TabledItemsViewProvider: NSObject, ACAlertListViewProvider {
         
         return ACStackAlertListView(views: views, width: width)
     }
-    func alertView(actions: [(ACAlertActionProtocolBase, UIEdgeInsets?)], width: CGFloat) -> ACAlertListViewProtocol {
-        return ACAlertListView(height: CGFloat(actions.count) * 45, color: UIColor.orange)
+    
+    func alertView(actions: [(ACAlertActionProtocolBase, UIEdgeInsets)], width: CGFloat) -> ACAlertListViewProtocol {
+        
+        let views = actions.map { (action, insets) in return (buttonView(action: action), insets) }
+        return ACStackAlertListView(views: views, width: width)
     }
     
     open var buttonsMargins = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8) // Applied to buttons
@@ -76,7 +79,7 @@ class ACStackAlertListView: ACAlertListViewProtocol {
     let stackView: UIStackView
     let scrollView = UIScrollView()
     
-    var margins = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0)
+    var margins = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
     
     init(views: [(UIView, UIEdgeInsets)], width: CGFloat) {
 
@@ -102,7 +105,7 @@ class ACStackAlertListView: ACAlertListViewProtocol {
 class ACAlertControllerBase : UIViewController{
 
     fileprivate(set) open var items: [(ACAlertItemProtocol, UIEdgeInsets)] = []
-    fileprivate(set) open var actions: [(ACAlertActionProtocolBase, UIEdgeInsets?)] = []
+    fileprivate(set) open var actions: [(ACAlertActionProtocolBase, UIEdgeInsets)] = []
     
 //    open var items: [ACAlertItemProtocol] { return items.map{ $0.0 } }
 //    fileprivate(set) open var actions: [ACAlertActionProtocol] = []
@@ -155,7 +158,7 @@ class ACAlertControllerBase : UIViewController{
             print("ACAlertController could not be modified if it is already presented")
             return
         }
-        actions.append(action, inset)
+        actions.append((action, inset ?? defaultItemsMargins))
     }
     
     override func loadView() {
@@ -252,7 +255,7 @@ class ACAlertControllerBase : UIViewController{
 
 class Layout {
     
-    open static var nonMandatoryConstraintPriority: UILayoutPriority = 900 // Item's and action's constraints that could conflict with ACAlertController constraints should have priorities in [nonMandatoryConstraintPriority ..< 1000] range.
+    open static var nonMandatoryConstraintPriority: UILayoutPriority = 700 // Item's and action's constraints that could conflict with ACAlertController constraints should have priorities in [nonMandatoryConstraintPriority ..< 1000] range.
     
     class func set(width: CGFloat, view: UIView) {
         
