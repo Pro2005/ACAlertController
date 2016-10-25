@@ -57,6 +57,8 @@ class ACStackAlertListView: ACAlertListViewProtocol {
     let stackView: UIStackView
     let scrollView = UIScrollView()
     
+    var margins = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0)
+    
     init(views: [(UIView, UIEdgeInsets)], width: CGFloat) {
 
         stackView = UIStackView(arrangedSubviews: views.map { $0.0 } )
@@ -72,12 +74,9 @@ class ACStackAlertListView: ACAlertListViewProtocol {
         Layout.setEqual(view:scrollView, subview: stackView, margins: false)
         Layout.set(width: width, view: stackView)
         
+        stackView.layoutMargins = margins
+        stackView.isLayoutMarginsRelativeArrangement = true
         contentHeight = stackView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
-    }
-
-    func stat() {
-        scrollView.layoutSubviews()
-        print("LOG", scrollView.contentSize, stackView.frame.size, stackView.systemLayoutSizeFitting(UILayoutFittingCompressedSize))
     }
 }
 
@@ -169,7 +168,7 @@ class ACAlertControllerBase : UIViewController{
         
         let (height1, height2) = elementsHeights()
         if let h = height1, let v = itemsAlertList?.view {
-            Layout.set(height: 200, view: v)
+            Layout.set(height: h, view: v)
         }
         if let h = height2, let v = actionsAlertList?.view {
             Layout.set(height: h, view: v)
@@ -198,20 +197,14 @@ class ACAlertControllerBase : UIViewController{
                 Layout.setEqualBottom(view: view, subview: topSubview, margins: true)
             }
         }
-        
-        (itemsAlertList as! ACStackAlertListView).stat()
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        (itemsAlertList as! ACStackAlertListView).stat()
     }
     
     var hasItems: Bool { return items.count > 0 }
     var hasActions: Bool { return actions.count > 0 }
+    var maxViewHeight: CGFloat { return UIScreen.main.bounds.height - 80 }
     
     func elementsHeights() -> (itemsHeight: CGFloat?, actionsHeight: CGFloat?) {
-        let max = maxViewHeight() - viewMargins.topPlusBottom
+        let max = maxViewHeight - viewMargins.topPlusBottom
         
         switch (itemsAlertList?.contentHeight, actionsAlertList?.contentHeight) {
         case (nil, nil):
@@ -235,10 +228,6 @@ class ACAlertControllerBase : UIViewController{
             }
             return (max2 / 2, max2 / 2)
         }
-    }
-    
-    func maxViewHeight() -> CGFloat {
-        return UIScreen.main.bounds.height - 80
     }
 }
 
