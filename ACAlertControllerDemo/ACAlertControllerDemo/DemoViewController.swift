@@ -30,10 +30,11 @@ extension DemoViewController {
     func createLabel(_ text: String?, textColor: UIColor = UIColor.black, color: UIColor = UIColor.clear) -> UILabel {
         let label = UILabel()
         label.text = text
-        label.numberOfLines = 1
+        label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 15)
         label.textColor = textColor
         label.backgroundColor = color
+        label.textAlignment = .center
 //        label.sizeToFit()
         return label
     }
@@ -56,8 +57,11 @@ extension DemoViewController {
         
         if alert == nil {
             alert = ACAlertControllerBase()
+            alert.addItem(createLabel("Short text"))
+            alert.addItem(UIImageView(image: UIImage(named: "Details Icon")))
             alert.addItem(UIImageView(image: UIImage(named: "Checklist Icon OK")))
-            alert.addItem(UIImageView(image: UIImage(named: "Checklist Icon OK")))
+            alert.addItem(UIImageView(image: UIImage(named: "Details Icon")))
+            alert.addItem(createLabel("Мой дядя самых честных правил !!!! когда не в шутку занемог, он уважать себя заставил и лучше выдумать не мог."))
             alert.addItem(UIImageView(image: UIImage(named: "Checklist Icon OK")))
             
             let action = ACAlertActionNative(title: "Disabled title", style: .default, handler: { (_) in
@@ -66,26 +70,10 @@ extension DemoViewController {
             alert.addAction(action)
             alert.addAction(action)
             alert.addAction(action)
-//            alert.view.layoutSubviews()
-//            view.addSubview(alert.view)
-//            alert.view.layoutSubviews()
-//            alert.view.frame = CGRect(x: 100, y: 100, width: 200, height: 400)
-//            alert.view.frame = CGRect(x: 100, y: 100, width: alert.view.frame.width, height: alert.view.frame.height)
-        } else {
-//            alert.addItem(UIImageView(image: UIImage(named: "Checklist Icon OK")))
-            
-//            let action = ACAlertActionNative(title: "Disabled title", style: .default, handler: { (_) in
-//                print("Disabled")
-//            })
-//            alert.addAction(action)
-//            view.addSubview(alert.view)
-//            alert.view.frame = CGRect(x: 100, y: 100, width: 200, height: 400)
-//            alert.view.frame = CGRect(x: 100, y: 100, width: alert.view.frame.width, height: alert.view.frame.height)
+
             view.addSubview(alert.view)
             NSLayoutConstraint(item: view, attribute: .centerX, relatedBy: .equal, toItem: alert.view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
             NSLayoutConstraint(item: view, attribute: .centerY, relatedBy: .equal, toItem: alert.view, attribute: .centerY, multiplier: 1, constant: 0).isActive = true
-            view.layoutSubviews()
-            print(alert.view.frame)
         }
         
         
