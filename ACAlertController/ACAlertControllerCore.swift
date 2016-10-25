@@ -67,22 +67,10 @@ class ACStackAlertListView: ACAlertListViewProtocol {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(stackView)
         
-        ACStackAlertListView.setEqual(view:scrollView, subview: stackView)
-        ACStackAlertListView.set(width: width, view: stackView)
+        Layout.setEqual(view:scrollView, subview: stackView, margins: false)
+        Layout.set(width: width, view: stackView)
         
         contentHeight = stackView.bounds.height
-    }
-
-    class func set(width: CGFloat, view: UIView) {
-        NSLayoutConstraint(item: view, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: width).isActive = true
-    }
-    
-    class func setEqual(view: UIView, subview: UIView) {
-
-        NSLayoutConstraint(item: view, attribute: .left, relatedBy: .lessThanOrEqual, toItem: subview, attribute: .left, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: view, attribute: .right, relatedBy: .greaterThanOrEqual, toItem: subview, attribute: .right, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: view, attribute: .top, relatedBy: .equal, toItem: subview, attribute: .top, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: view, attribute: .bottom, relatedBy: .equal, toItem: subview, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
     }
 
     func stat() {
@@ -155,14 +143,14 @@ class ACAlertControllerBase : UIViewController{
         view.layer.cornerRadius = cornerRadius
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.masksToBounds = true
-        set(width: alertWidth, view: view)
+        Layout.set(width: alertWidth, view: view)
         
         // Is needed because of layoutMargins http://stackoverflow.com/questions/27421469/setting-layoutmargins-of-uiview-doesnt-work
         let contentView = UIView()
         view.addSubview(contentView)
         contentView.layoutMargins = viewMargins
         contentView.translatesAutoresizingMaskIntoConstraints = false
-        setEqual(view: view, subview: contentView)
+        Layout.setEqual(view: view, subview: contentView, margins: false)
         
         setContentView(view: contentView)
     }
@@ -177,33 +165,37 @@ class ACAlertControllerBase : UIViewController{
         }
         
         let (height1, height2) = elementsHeights()
-        set(height: 200, view: itemsAlertList?.view)
-        set(height: height2, view: actionsAlertList?.view)
+        if let h = height1, let v = itemsAlertList?.view {
+            Layout.set(height: 200, view: v)
+        }
+        if let h = height2, let v = actionsAlertList?.view {
+            Layout.set(height: h, view: v)
+        }
         
         if let topSubview = itemsAlertList?.view ?? actionsAlertList?.view {
             view.addSubview(topSubview)
             topSubview.translatesAutoresizingMaskIntoConstraints = false
             
-            setEqualTop(view: view, subview: topSubview)
-            setEqualLeftAndRight(view: view, subview: topSubview)
+            Layout.setEqualTop(view: view, subview: topSubview, margins: true)
+            Layout.setEqualLeftAndRight(view: view, subview: topSubview, margins: true)
             
             if let bottomSubview = actionsAlertList?.view, bottomSubview !== topSubview {
                 view.addSubview(separatorView)
                 separatorView.translatesAutoresizingMaskIntoConstraints = false
 
-                setBottomToTop(topView: topSubview, bottomView: separatorView)
-                setEqualLeftAndRight(view: view, subview: separatorView)
-                set(height: separatorHeight, view: separatorView)
+                Layout.setBottomToTop(topView: topSubview, bottomView: separatorView)
+                Layout.setEqualLeftAndRight(view: view, subview: separatorView, margins: true)
+                Layout.set(height: separatorHeight, view: separatorView)
 
                 view.addSubview(bottomSubview)
                 bottomSubview.translatesAutoresizingMaskIntoConstraints = false
 
-                setBottomToTop(topView: separatorView, bottomView: bottomSubview)
-                setEqualLeftAndRight(view: view, subview: bottomSubview)
-                setEqualBottom(view: view, subview: bottomSubview)
+                Layout.setBottomToTop(topView: separatorView, bottomView: bottomSubview)
+                Layout.setEqualLeftAndRight(view: view, subview: bottomSubview, margins: true)
+                Layout.setEqualBottom(view: view, subview: bottomSubview, margins: true)
                 
             } else {
-                setEqualBottom(view: view, subview: topSubview)
+                Layout.setEqualBottom(view: view, subview: topSubview, margins: true)
             }
         }
         
@@ -213,40 +205,6 @@ class ACAlertControllerBase : UIViewController{
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         (itemsAlertList as! ACStackAlertListView).stat()
-    }
-
-    func setEqual(view: UIView, subview: UIView) {
-        NSLayoutConstraint(item: view, attribute: .left, relatedBy: .equal, toItem: subview, attribute: .left, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: view, attribute: .right, relatedBy: .equal, toItem: subview, attribute: .right, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: view, attribute: .top, relatedBy: .equal, toItem: subview, attribute: .top, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: view, attribute: .bottom, relatedBy: .equal, toItem: subview, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
-    }
-    
-    func set(height: CGFloat?, view: UIView?) {
-        guard let height = height, let view = view else { return }
-        NSLayoutConstraint(item: view, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: height).isActive = true
-    }
-    
-    func set(width: CGFloat?, view: UIView?) {
-        guard let width = width, let view = view else { return }
-        NSLayoutConstraint(item: view, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: width).isActive = true
-    }
-    
-    func setEqualLeftAndRight(view: UIView, subview: UIView) {
-        NSLayoutConstraint(item: view, attribute: .leftMargin, relatedBy: .equal, toItem: subview, attribute: .left, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: view, attribute: .rightMargin, relatedBy: .equal, toItem: subview, attribute: .right, multiplier: 1, constant: 0).isActive = true
-    }
-    
-    func setEqualTop(view: UIView, subview: UIView) {
-        NSLayoutConstraint(item: view, attribute: .topMargin, relatedBy: .equal, toItem: subview, attribute: .top, multiplier: 1, constant: 0).isActive = true
-    }
-    
-    func setEqualBottom(view: UIView, subview: UIView) {
-        NSLayoutConstraint(item: view, attribute: .bottomMargin, relatedBy: .equal, toItem: subview, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
-    }
-    
-    func setBottomToTop(topView: UIView, bottomView: UIView) {
-        NSLayoutConstraint(item: topView, attribute: .bottom, relatedBy: .equal, toItem: bottomView, attribute: .top, multiplier: 1, constant: 0).isActive = true
     }
     
     var hasItems: Bool { return items.count > 0 }
@@ -281,5 +239,40 @@ class ACAlertControllerBase : UIViewController{
     
     func maxViewHeight() -> CGFloat {
         return UIScreen.main.bounds.height - 80
+    }
+}
+
+class Layout {
+    
+    class func set(width: CGFloat, view: UIView) {
+        NSLayoutConstraint(item: view, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: width).isActive = true
+    }
+    
+    class func set(height: CGFloat, view: UIView) {
+        NSLayoutConstraint(item: view, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: height).isActive = true
+    }
+
+    class func setEqual(view: UIView, subview: UIView, margins: Bool) {
+        NSLayoutConstraint(item: view, attribute: margins ? .leftMargin : .left, relatedBy: .equal, toItem: subview, attribute: .left, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: view, attribute: margins ? .rightMargin : .right, relatedBy: .equal, toItem: subview, attribute: .right, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: view, attribute: margins ? .topMargin : .top, relatedBy: .equal, toItem: subview, attribute: .top, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: view, attribute: margins ? .bottomMargin: .bottom, relatedBy: .equal, toItem: subview, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+    }
+
+    class func setEqualLeftAndRight(view: UIView, subview: UIView, margins: Bool) {
+        NSLayoutConstraint(item: view, attribute: margins ? .leftMargin : .left, relatedBy: .equal, toItem: subview, attribute: .left, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: view, attribute: margins ? .rightMargin : .right, relatedBy: .equal, toItem: subview, attribute: .right, multiplier: 1, constant: 0).isActive = true
+    }
+    
+    class func setEqualTop(view: UIView, subview: UIView, margins: Bool) {
+        NSLayoutConstraint(item: view, attribute: margins ? .topMargin : .top, relatedBy: .equal, toItem: subview, attribute: .top, multiplier: 1, constant: 0).isActive = true
+    }
+    
+    class func setEqualBottom(view: UIView, subview: UIView, margins: Bool) {
+        NSLayoutConstraint(item: view, attribute: margins ? .bottomMargin : .bottom, relatedBy: .equal, toItem: subview, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+    }
+    
+    class func setBottomToTop(topView: UIView, bottomView: UIView) {
+        NSLayoutConstraint(item: topView, attribute: .bottom, relatedBy: .equal, toItem: bottomView, attribute: .top, multiplier: 1, constant: 0).isActive = true
     }
 }
