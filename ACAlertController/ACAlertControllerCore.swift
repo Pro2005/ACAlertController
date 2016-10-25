@@ -9,13 +9,7 @@
 import Foundation
 import UIKit
 
-extension UIEdgeInsets {
-    var topPlusBottom: CGFloat { return top + bottom }
-    var leftPlusRight: CGFloat { return left + right }
-    init(top: CGFloat, bottom: CGFloat) {
-        self.init(top: top, left: 0, bottom: bottom, right: 0)
-    }
-}
+public var alertLinesColor = UIColor(red:220/256, green:220/256, blue:224/256, alpha:1.0)
 
 protocol ACAlertListViewProtocol {
     var contentHeight: CGFloat { get }
@@ -49,10 +43,12 @@ class TabledItemsViewProvider: NSObject, ACAlertListViewProvider {
     func alertView(actions: [(ACAlertActionProtocolBase, UIEdgeInsets)], width: CGFloat) -> ACAlertListViewProtocol {
         
         let views = actions.map { (action, insets) in return (buttonView(action: action), insets) }
-        return ACStackAlertListView(views: views, width: width)
+        let views2 = views.flatMap { [$0, (separatorView(), UIEdgeInsets())] }.dropLast()
+        return ACStackAlertListView2(views: Array(views2), width: width)
     }
     
     open var buttonsMargins = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8) // Applied to buttons
+    open var defaultButtonHeight: CGFloat = 45
     
     fileprivate func buttonView(action: ACAlertActionProtocolBase) -> UIView {
         
@@ -66,9 +62,17 @@ class TabledItemsViewProvider: NSObject, ACAlertListViewProvider {
         button.translatesAutoresizingMaskIntoConstraints = false
         
         Layout.setInCenter(view: button, subview: actionView, margins: true)
-        Layout.setOptional(height: 45, view: actionView)
+        Layout.setOptional(height: defaultButtonHeight, view: button)
         
         return button
+    }
+    
+    fileprivate func separatorView() -> UIView {
+        let view = UIView()
+        view.backgroundColor = alertLinesColor
+        view.translatesAutoresizingMaskIntoConstraints = false
+        Layout.set(height: 0.5, view: view)
+        return view
     }
 }
 
@@ -102,6 +106,36 @@ class ACStackAlertListView: ACAlertListViewProtocol {
     }
 }
 
+class ACStackAlertListView2: ACAlertListViewProtocol {
+    var view: UIView { return scrollView }
+    var contentHeight: CGFloat
+    
+    let stackView: UIStackView
+    let scrollView = UIScrollView()
+    
+    var margins = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
+    
+    init(views: [(UIView, UIEdgeInsets)], width: CGFloat) {
+        
+        stackView = UIStackView(arrangedSubviews: views.map { $0.0 } )
+        stackView.axis = .vertical
+        stackView.alignment = .fill
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 0
+        
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        
+        scrollView.addSubview(stackView)
+        Layout.setEqual(view:scrollView, subview: stackView, margins: false)
+        Layout.set(width: width, view: stackView)
+        
+        stackView.layoutMargins = margins
+        stackView.isLayoutMarginsRelativeArrangement = true
+        contentHeight = stackView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
+    }
+}
+
 class ACAlertControllerBase : UIViewController{
 
     fileprivate(set) open var items: [(ACAlertItemProtocol, UIEdgeInsets)] = []
@@ -110,9 +144,9 @@ class ACAlertControllerBase : UIViewController{
 //    open var items: [ACAlertItemProtocol] { return items.map{ $0.0 } }
 //    fileprivate(set) open var actions: [ACAlertActionProtocol] = []
     
-    open var backgroundColor = UIColor.brown//UIColor.white.withAlphaComponent(0.25)
+    open var backgroundColor = UIColor(white: 248/256, alpha: 1)
     
-    open var viewMargins = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)//UIEdgeInsets(top: 15, bottom: 15)
+    open var viewMargins = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0)//UIEdgeInsets(top: 15, bottom: 15)
     open var defaultItemsMargins = UIEdgeInsets(top: 2, left: 0, bottom: 2, right: 0) // Applied to items
 //    open var itemsMargins = UIEdgeInsets(top: 4, bottom: 4)
 //    open var actionsMargins = UIEdgeInsets(top: 4, bottom: 4)
@@ -128,7 +162,7 @@ class ACAlertControllerBase : UIViewController{
     
     var separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.yellow
+        view.backgroundColor = alertLinesColor
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -325,3 +359,12 @@ class Layout {
         NSLayoutConstraint(item: topView, attribute: .bottom, relatedBy: .equal, toItem: bottomView, attribute: .top, multiplier: 1, constant: 0).isActive = true
     }
 }
+
+extension UIEdgeInsets {
+    var topPlusBottom: CGFloat { return top + bottom }
+    var leftPlusRight: CGFloat { return left + right }
+    init(top: CGFloat, bottom: CGFloat) {
+        self.init(top: top, left: 0, bottom: bottom, right: 0)
+    }
+}
+
