@@ -35,6 +35,7 @@ class ACAlertListView: ACAlertListViewProtocol {
     init(height: CGFloat, color: UIColor) {
         contentHeight = height
         view.backgroundColor = color
+        view.translatesAutoresizingMaskIntoConstraints = false
     }
 }
 
@@ -65,12 +66,13 @@ class ACStackAlertListView: ACAlertListViewProtocol {
         stackView.spacing = 0
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.addSubview(stackView)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
         
+        scrollView.addSubview(stackView)
         Layout.setEqual(view:scrollView, subview: stackView, margins: false)
         Layout.set(width: width, view: stackView)
         
-        contentHeight = stackView.bounds.height
+        contentHeight = stackView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
     }
 
     func stat() {
@@ -106,6 +108,7 @@ class ACAlertControllerBase : UIViewController{
     var separatorView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.yellow
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
@@ -174,21 +177,18 @@ class ACAlertControllerBase : UIViewController{
         
         if let topSubview = itemsAlertList?.view ?? actionsAlertList?.view {
             view.addSubview(topSubview)
-            topSubview.translatesAutoresizingMaskIntoConstraints = false
             
             Layout.setEqualTop(view: view, subview: topSubview, margins: true)
             Layout.setEqualLeftAndRight(view: view, subview: topSubview, margins: true)
             
             if let bottomSubview = actionsAlertList?.view, bottomSubview !== topSubview {
                 view.addSubview(separatorView)
-                separatorView.translatesAutoresizingMaskIntoConstraints = false
 
                 Layout.setBottomToTop(topView: topSubview, bottomView: separatorView)
                 Layout.setEqualLeftAndRight(view: view, subview: separatorView, margins: true)
                 Layout.set(height: separatorHeight, view: separatorView)
 
                 view.addSubview(bottomSubview)
-                bottomSubview.translatesAutoresizingMaskIntoConstraints = false
 
                 Layout.setBottomToTop(topView: separatorView, bottomView: bottomSubview)
                 Layout.setEqualLeftAndRight(view: view, subview: bottomSubview, margins: true)
