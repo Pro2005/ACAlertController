@@ -43,6 +43,22 @@ class TabledItemsViewProvider: NSObject, ACAlertListViewProvider {
     func alertView(actions: [(ACAlertActionProtocolBase, UIEdgeInsets)], width: CGFloat) -> ACAlertListViewProtocol {
         
         let views = actions.map { (action, insets) in return (buttonView(action: action), insets) }
+        
+        if views.count == 2 {
+            let button1 = views[0].0
+            let button2 = views[1].0
+            button1.layoutIfNeeded()
+            button2.layoutIfNeeded()
+            
+            let maxReducedWidth = (width - 1) / 2
+            if button1.bounds.width < maxReducedWidth && button2.bounds.width < maxReducedWidth
+            {
+                Layout.set(width: maxReducedWidth, view: button1)
+                Layout.set(width: maxReducedWidth, view: button2)
+                return ACStackAlertListView3(views: [button1, separatorView2(), button2], width: width)
+            }
+        }
+        
         let views2 = views.flatMap { [$0, (separatorView(), UIEdgeInsets())] }.dropLast()
         return ACStackAlertListView2(views: Array(views2), width: width)
     }
@@ -72,6 +88,14 @@ class TabledItemsViewProvider: NSObject, ACAlertListViewProvider {
         view.backgroundColor = alertLinesColor
         view.translatesAutoresizingMaskIntoConstraints = false
         Layout.set(height: 0.5, view: view)
+        return view
+    }
+
+    fileprivate func separatorView2() -> UIView {
+        let view = UIView()
+        view.backgroundColor = alertLinesColor
+        view.translatesAutoresizingMaskIntoConstraints = false
+        Layout.set(width: 0.5, view: view)
         return view
     }
 }
@@ -113,12 +137,42 @@ class ACStackAlertListView2: ACAlertListViewProtocol {
     let stackView: UIStackView
     let scrollView = UIScrollView()
     
-    var margins = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
+    var margins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     
     init(views: [(UIView, UIEdgeInsets)], width: CGFloat) {
         
         stackView = UIStackView(arrangedSubviews: views.map { $0.0 } )
         stackView.axis = .vertical
+        stackView.alignment = .fill
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 0
+        
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        
+        scrollView.addSubview(stackView)
+        Layout.setEqual(view:scrollView, subview: stackView, margins: false)
+        Layout.set(width: width, view: stackView)
+        
+        stackView.layoutMargins = margins
+        stackView.isLayoutMarginsRelativeArrangement = true
+        contentHeight = stackView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
+    }
+}
+
+class ACStackAlertListView3: ACAlertListViewProtocol {
+    var view: UIView { return scrollView }
+    var contentHeight: CGFloat
+    
+    let stackView: UIStackView
+    let scrollView = UIScrollView()
+    
+    var margins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    
+    init(views: [UIView], width: CGFloat) {
+        
+        stackView = UIStackView(arrangedSubviews: views )
+        stackView.axis = .horizontal
         stackView.alignment = .fill
         stackView.distribution = .equalSpacing
         stackView.spacing = 0
