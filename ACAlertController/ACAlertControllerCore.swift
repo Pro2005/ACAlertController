@@ -24,7 +24,7 @@ protocol ACAlertListViewProtocol {
 
 protocol ACAlertListViewProvider {
     func alertView(items : [(ACAlertItemProtocol, UIEdgeInsets)], width: CGFloat) -> ACAlertListViewProtocol
-    func alertView(actions : [(ACAlertActionProtocol, UIEdgeInsets?)], width: CGFloat) -> ACAlertListViewProtocol
+    func alertView(actions : [(ACAlertActionProtocolBase, UIEdgeInsets?)], width: CGFloat) -> ACAlertListViewProtocol
 }
 
 class ACAlertListView: ACAlertListViewProtocol {
@@ -45,8 +45,27 @@ class TabledItemsViewProvider: NSObject, ACAlertListViewProvider {
         
         return ACStackAlertListView(views: views, width: width)
     }
-    func alertView(actions: [(ACAlertActionProtocol, UIEdgeInsets?)], width: CGFloat) -> ACAlertListViewProtocol {
+    func alertView(actions: [(ACAlertActionProtocolBase, UIEdgeInsets?)], width: CGFloat) -> ACAlertListViewProtocol {
         return ACAlertListView(height: CGFloat(actions.count) * 45, color: UIColor.orange)
+    }
+    
+    open var buttonsMargins = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8) // Applied to buttons
+    
+    fileprivate func buttonView(action: ACAlertActionProtocolBase) -> UIView {
+        
+        let actionView = action.alertView
+        actionView.translatesAutoresizingMaskIntoConstraints = false
+        actionView.isUserInteractionEnabled = false
+        
+        let button = UIView()
+        button.layoutMargins = buttonsMargins
+        button.addSubview(actionView)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        Layout.setInCenter(view: button, subview: actionView, margins: true)
+        Layout.setOptional(height: 45, view: actionView)
+        
+        return button
     }
 }
 
@@ -83,7 +102,7 @@ class ACStackAlertListView: ACAlertListViewProtocol {
 class ACAlertControllerBase : UIViewController{
 
     fileprivate(set) open var items: [(ACAlertItemProtocol, UIEdgeInsets)] = []
-    fileprivate(set) open var actions: [(ACAlertActionProtocol, UIEdgeInsets?)] = []
+    fileprivate(set) open var actions: [(ACAlertActionProtocolBase, UIEdgeInsets?)] = []
     
 //    open var items: [ACAlertItemProtocol] { return items.map{ $0.0 } }
 //    fileprivate(set) open var actions: [ACAlertActionProtocol] = []
@@ -131,7 +150,7 @@ class ACAlertControllerBase : UIViewController{
         items.append((item, inset ?? defaultItemsMargins))
     }
     
-    open func addAction(_ action: ACAlertActionProtocol, inset: UIEdgeInsets? = nil) {
+    open func addAction(_ action: ACAlertActionProtocolBase, inset: UIEdgeInsets? = nil) {
         guard isBeingPresented == false else {
             print("ACAlertController could not be modified if it is already presented")
             return
@@ -233,23 +252,59 @@ class ACAlertControllerBase : UIViewController{
 
 class Layout {
     
+    open static var nonMandatoryConstraintPriority: UILayoutPriority = 900 // Item's and action's constraints that could conflict with ACAlertController constraints should have priorities in [nonMandatoryConstraintPriority ..< 1000] range.
+    
     class func set(width: CGFloat, view: UIView) {
+        
         NSLayoutConstraint(item: view, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: width).isActive = true
     }
     
     class func set(height: CGFloat, view: UIView) {
+        
         NSLayoutConstraint(item: view, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: height).isActive = true
     }
 
+    class func setOptional(height: CGFloat, view: UIView) {
+        
+        let constraint = NSLayoutConstraint(item: view, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: height)
+        constraint.priority = nonMandatoryConstraintPriority
+        constraint.isActive = true
+    }
+    
+    class func setInCenter(view: UIView, subview: UIView, margins: Bool) {
+        
+        NSLayoutConstraint(item: view, attribute: margins ? .leadingMargin : .leading, relatedBy: .lessThanOrEqual, toItem: subview, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+        
+        NSLayoutConstraint(item: view, attribute: margins ? .trailingMargin : .trailing, relatedBy: .greaterThanOrEqual, toItem: subview, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+        
+        NSLayoutConstraint(item: view, attribute: margins ? .topMargin : .top, relatedBy: .lessThanOrEqual, toItem: subview, attribute: .top, multiplier: 1, constant: 0).isActive = true
+        
+        NSLayoutConstraint(item: view, attribute: margins ? .bottomMargin : .bottom, relatedBy: .greaterThanOrEqual, toItem: subview, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+        
+        let centerX = NSLayoutConstraint(item: view, attribute: margins ? .centerXWithinMargins : .centerX, relatedBy: .equal, toItem: subview, attribute: .centerX, multiplier: 1, constant: 0)
+        centerX.priority = nonMandatoryConstraintPriority
+        centerX.isActive = true
+        
+        let centerY = NSLayoutConstraint(item: view, attribute: margins ? .centerYWithinMargins : .centerY, relatedBy: .equal, toItem: subview, attribute: .centerY, multiplier: 1, constant: 0)
+        centerY.priority = nonMandatoryConstraintPriority
+        centerY.isActive = true
+    }
+    
     class func setEqual(view: UIView, subview: UIView, margins: Bool) {
+        
         NSLayoutConstraint(item: view, attribute: margins ? .leftMargin : .left, relatedBy: .equal, toItem: subview, attribute: .left, multiplier: 1, constant: 0).isActive = true
+        
         NSLayoutConstraint(item: view, attribute: margins ? .rightMargin : .right, relatedBy: .equal, toItem: subview, attribute: .right, multiplier: 1, constant: 0).isActive = true
+        
         NSLayoutConstraint(item: view, attribute: margins ? .topMargin : .top, relatedBy: .equal, toItem: subview, attribute: .top, multiplier: 1, constant: 0).isActive = true
+        
         NSLayoutConstraint(item: view, attribute: margins ? .bottomMargin: .bottom, relatedBy: .equal, toItem: subview, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
     }
 
     class func setEqualLeftAndRight(view: UIView, subview: UIView, margins: Bool) {
+        
         NSLayoutConstraint(item: view, attribute: margins ? .leftMargin : .left, relatedBy: .equal, toItem: subview, attribute: .left, multiplier: 1, constant: 0).isActive = true
+        
         NSLayoutConstraint(item: view, attribute: margins ? .rightMargin : .right, relatedBy: .equal, toItem: subview, attribute: .right, multiplier: 1, constant: 0).isActive = true
     }
     
@@ -258,10 +313,12 @@ class Layout {
     }
     
     class func setEqualBottom(view: UIView, subview: UIView, margins: Bool) {
+        
         NSLayoutConstraint(item: view, attribute: margins ? .bottomMargin : .bottom, relatedBy: .equal, toItem: subview, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
     }
     
     class func setBottomToTop(topView: UIView, bottomView: UIView) {
+        
         NSLayoutConstraint(item: topView, attribute: .bottom, relatedBy: .equal, toItem: bottomView, attribute: .top, multiplier: 1, constant: 0).isActive = true
     }
 }

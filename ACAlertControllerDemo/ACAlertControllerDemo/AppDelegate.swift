@@ -20,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        window?.tintColor = UIColor.greenColor()
         window?.rootViewController = mainVC
         window?.makeKeyAndVisible()
+//        window?.tintColor = UIColor.green
         return true
     }
 

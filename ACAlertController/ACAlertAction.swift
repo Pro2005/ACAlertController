@@ -8,42 +8,52 @@
 
 import UIKit
 
-public protocol ACAlertActionProtocol {
+public protocol ACAlertActionProtocolBase {
     
-    func alertView(_ tintColor: UIColor) -> UIView
+    var alertView: UIView { get }
+    var enabled: Bool { get }
     func highlight(_ isHighlited: Bool)
     func call() -> Void
-    var enabled: Bool { get }
 }
 
-extension ACAlertActionProtocol {
+extension ACAlertActionProtocolBase {
     
     public var enabled: Bool { return true }
     public func highlight(_ isHighlited: Bool) { }
 }
 
-// MARK: -
-
-open class ACAlertAction<T:UIView>: ACAlertActionProtocol {
+public protocol ACAlertActionProtocol: ACAlertActionProtocolBase {
     
-    open let alertView: T
-    open let handler: ((ACAlertAction<T>) -> Void)?
-    
-    public init(view: T, handler: ((ACAlertAction<T>) -> Void)?) {
-        self.alertView = view
-        self.handler = handler
-    }
-    
-    open func alertView(_ tintColor: UIColor) -> UIView {
-        return alertView
-    }
-    
-    open func call() {
-        handler?(self)
-    }
+    func alertView(_ tintColor: UIColor) -> UIView
 }
 
-open class ACAlertActionNative: ACAlertActionProtocol {
+extension ACAlertActionProtocol {
+    func alertView(_ tintColor: UIColor) -> UIView {
+        return self.alertView
+    }
+}
+// MARK: -
+
+//open class ACAlertAction<T:UIView>: ACAlertActionProtocol {
+//    
+//    open let alertView: T
+//    open let handler: ((ACAlertAction<T>) -> Void)?
+//    
+//    public init(view: T, handler: ((ACAlertAction<T>) -> Void)?) {
+//        self.alertView = view
+//        self.handler = handler
+//    }
+//    
+//    open func alertView(_ tintColor: UIColor) -> UIView {
+//        return alertView
+//    }
+//    
+//    open func call() {
+//        handler?(self)
+//    }
+//}
+
+open class ACAlertActionNative: ACAlertActionProtocolBase {
     
     open let handler: ((ACAlertActionNative) -> Void)?
     
@@ -57,21 +67,21 @@ open class ACAlertActionNative: ACAlertActionProtocol {
         self.handler = handler
     }
     
-    open func alertView(_ tintColor: UIColor) -> UIView {
+    lazy open var alertView: UIView = {
         let label = UILabel()
         
         let fontSize: CGFloat = 17
-        label.font = style == .cancel ? UIFont.boldSystemFont(ofSize: fontSize) :  UIFont.systemFont(ofSize: fontSize)
+        label.font = self.style == .cancel ? UIFont.boldSystemFont(ofSize: fontSize) :  UIFont.systemFont(ofSize: fontSize)
         label.minimumScaleFactor = 0.5
         
-        let normalColor = enabled ? tintColor : UIColor.gray
-        label.textColor = style == .destructive ? UIColor.red : normalColor
+        let normalColor = self.enabled ? label.tintColor : UIColor.gray
+        label.textColor = self.style == .destructive ? UIColor.red : normalColor
         
-        label.text = title
+        label.text = self.title
         
         return label
-    }
-    
+    }()
+
     open func call() {
         handler?(self)
     }

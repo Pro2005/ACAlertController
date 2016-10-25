@@ -57,13 +57,15 @@ extension DemoViewController {
         
         if alert == nil {
             alert = ACAlertControllerBase()
-            alert.addItem(createLabel("Short text"))
-            alert.addItem(UIImageView(image: UIImage(named: "Details Icon")))
-            alert.addItem(UIImageView(image: UIImage(named: "Checklist Icon OK")))
-            alert.addItem(UIImageView(image: UIImage(named: "Details Icon")))
-            alert.addItem(createLabel("Мой дядя самых честных правил !!!! когда не в шутку занемог, он уважать себя заставил и лучше выдумать не мог."))
-            alert.addItem(UIImageView(image: UIImage(named: "Checklist Icon OK")))
-            
+            for _ in 1...4 {
+                alert.addItem(createLabel("Short text"))
+                alert.addItem(UIImageView(image: UIImage(named: "Details Icon")))
+                alert.addItem(UIImageView(image: UIImage(named: "Checklist Icon OK")))
+                alert.addItem(UIImageView(image: UIImage(named: "Details Icon")))
+                alert.addItem(createLabel("Мой дядя самых честных правил !!!! когда не в шутку занемог, он уважать себя заставил и лучше выдумать не мог."))
+                alert.addItem(UIImageView(image: UIImage(named: "Checklist Icon OK")))
+            }
+
             let action = ACAlertActionNative(title: "Disabled title", style: .default, handler: { (_) in
                 print("Disabled")
             })
