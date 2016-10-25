@@ -41,20 +41,53 @@ class ACAlertListView: ACAlertListViewProtocol {
 class TabledItemsViewProvider: NSObject, ACAlertListViewProvider {
     func alertView(items: [(ACAlertItemProtocol, UIEdgeInsets)], width: CGFloat) -> ACAlertListViewProtocol {
         let views = items.map { (item, insets) in return (item.alertItemView, insets) }
-//        return ACAlertListView(height: CGFloat(items.count) * 30, color: UIColor.green)
+        
+        return ACStackAlertListView(views: views, width: width)
     }
     func alertView(actions: [(ACAlertActionProtocol, UIEdgeInsets?)], width: CGFloat) -> ACAlertListViewProtocol {
         return ACAlertListView(height: CGFloat(actions.count) * 45, color: UIColor.orange)
     }
 }
 
+class ACStackAlertListView: ACAlertListViewProtocol {
+    var view: UIView { return scrollView }
+    var contentHeight: CGFloat
+    
+    let stackView: UIStackView
+    let scrollView = UIScrollView()
+    
+    init(views: [(UIView, UIEdgeInsets)], width: CGFloat) {
 
-
+        stackView = UIStackView(arrangedSubviews: views.map { $0.0 } )
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 0
+        
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(stackView)
+        
+        ACStackAlertListView.setEqual(view:scrollView, subview: stackView)
+        ACStackAlertListView.set(width: width, view: stackView)
+        
+        contentHeight = stackView.bounds.height
     }
+
+    class func set(width: CGFloat, view: UIView) {
+        NSLayoutConstraint(item: view, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: width).isActive = true
     }
     
+    class func setEqual(view: UIView, subview: UIView) {
 
+        NSLayoutConstraint(item: view, attribute: .left, relatedBy: .lessThanOrEqual, toItem: subview, attribute: .left, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: view, attribute: .right, relatedBy: .greaterThanOrEqual, toItem: subview, attribute: .right, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: view, attribute: .top, relatedBy: .equal, toItem: subview, attribute: .top, multiplier: 1, constant: 0).isActive = true
+        NSLayoutConstraint(item: view, attribute: .bottom, relatedBy: .equal, toItem: subview, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
     }
+
+    func stat() {
+        scrollView.layoutSubviews()
+        print("LOG", scrollView.contentSize, stackView.frame.size, stackView.systemLayoutSizeFitting(UILayoutFittingCompressedSize))
     }
 }
 
@@ -144,7 +177,7 @@ class ACAlertControllerBase : UIViewController{
         }
         
         let (height1, height2) = elementsHeights()
-        set(height: height1, view: itemsAlertList?.view)
+        set(height: 200, view: itemsAlertList?.view)
         set(height: height2, view: actionsAlertList?.view)
         
         if let topSubview = itemsAlertList?.view ?? actionsAlertList?.view {
@@ -173,8 +206,15 @@ class ACAlertControllerBase : UIViewController{
                 setEqualBottom(view: view, subview: topSubview)
             }
         }
+        
+        (itemsAlertList as! ACStackAlertListView).stat()
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        (itemsAlertList as! ACStackAlertListView).stat()
+    }
+
     func setEqual(view: UIView, subview: UIView) {
         NSLayoutConstraint(item: view, attribute: .left, relatedBy: .equal, toItem: subview, attribute: .left, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: view, attribute: .right, relatedBy: .equal, toItem: subview, attribute: .right, multiplier: 1, constant: 0).isActive = true
