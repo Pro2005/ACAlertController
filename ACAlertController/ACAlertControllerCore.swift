@@ -41,7 +41,6 @@ class ACAlertListView: ACAlertListViewProtocol {
 class TabledItemsViewProvider: NSObject, ACAlertListViewProvider {
     func alertView(items: [(ACAlertItemProtocol, UIEdgeInsets)], width: CGFloat) -> ACAlertListViewProtocol {
         let views = items.map { (item, insets) in return (item.alertItemView, insets) }
-        return ACTableAlertListView(views: views)
 //        return ACAlertListView(height: CGFloat(items.count) * 30, color: UIColor.green)
     }
     func alertView(actions: [(ACAlertActionProtocol, UIEdgeInsets?)], width: CGFloat) -> ACAlertListViewProtocol {
@@ -49,98 +48,15 @@ class TabledItemsViewProvider: NSObject, ACAlertListViewProvider {
     }
 }
 
-class ACTableAlertListView: UITableView, ACAlertListViewProtocol, UITableViewDataSource {
-    
-    let cells: [UITableViewCell]
-    var view: UIView { return self }
-    var contentHeight: CGFloat { return contentSize.height }
-    
-    init(views: [(UIView, UIEdgeInsets)]) {
 
-        cells = views.map{ (view, insets) -> UITableViewCell in
-            let cell = UITableViewCell()
-            cell.contentView.layoutMargins = insets
-//            cell.textLabel?.text = "GGG!"
-            cell.contentView.addSubview(view)
-            cell.contentView.backgroundColor = UIColor.green
-            view.translatesAutoresizingMaskIntoConstraints = false
-            ACTableAlertListView.setContent(view: cell.contentView, subview: view)
-            
-            return cell
-        }
-        super.init(frame: .zero, style: .plain)
-        dataSource = self
 
-        self.rowHeight = UITableViewAutomaticDimension
-        self.estimatedRowHeight = 50
-        reloadData()
-        self.layoutSubviews()
+    }
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return cells.count
-    }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = cells[indexPath.row]
-//        NSLayoutConstraint(item: cell.contentView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 200).isActive = true
-        return cell
     }
-    
-    class func setContent(view: UIView, subview: UIView) {
-        
-        NSLayoutConstraint(item: view, attribute: .leftMargin, relatedBy: .lessThanOrEqual, toItem: subview, attribute: .left, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: view, attribute: .rightMargin, relatedBy: .greaterThanOrEqual, toItem: subview, attribute: .right, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: view, attribute: .centerXWithinMargins, relatedBy: .equal, toItem: subview, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: view, attribute: .topMargin, relatedBy: .equal, toItem: subview, attribute: .top, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: view, attribute: .bottomMargin, relatedBy: .equal, toItem: subview, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
     }
 }
-//    var items: [(ACAlertItemProtocol, UIEdgeInsets)] = []
-//    let tableView = UITableView()
-//    let cellName = "Cell"
-//    
-//    var margins: UIEdgeInsets
-//    
-//    func set(items: [(ACAlertItemProtocol, UIEdgeInsets)], width: CGFloat) {
-//        self.items = items
-//        tableView.bounds.size.width = width
-//        tableView.reloadData()
-//    }
-//
-//    override init() {
-//        super.init()
-//        tableView.dataSource = self
-//        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellName)
-//    }
-//    
-//    func view(height: CGFloat) -> UIView {
-//        tableView.bounds.size.height = height
-//        return tableView
-//    }
-//
-//    var contentHeight: CGFloat {
-//        return tableView.contentSize.height
-//    }
-//}
-
-//extension TabledItemsViewProvider: UITableViewDataSource {
-//
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: cellName, for: indexPath)
-//        let (item, inset) = items[indexPath.row]
-//
-//        return cell
-//    }
-//    
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return items.count
-//    }
-//}
 
 class ACAlertControllerBase : UIViewController{
 
