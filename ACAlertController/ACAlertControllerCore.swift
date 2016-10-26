@@ -160,7 +160,7 @@ class ACStackAlertListView: ACAlertListViewProtocol {
     let stackView: UIStackView
     let scrollView = UIScrollView()
     
-    var margins = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+    var margins = UIEdgeInsets(top: 10, left: 5, bottom: 10, right: 5)
     
     init(views: [UIView], width: CGFloat) {
 
@@ -251,9 +251,9 @@ class ACAlertControllerBase : UIViewController{
 //    open var items: [ACAlertItemProtocol] { return items.map{ $0.0 } }
 //    fileprivate(set) open var actions: [ACAlertActionProtocol] = []
     
-    open var backgroundColor = UIColor(white: 248/256, alpha: 1)
+    open var backgroundColor = UIColor(white: 250/256, alpha: 1)
     
-    open var viewMargins = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0)//UIEdgeInsets(top: 15, bottom: 15)
+    open var viewMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)//UIEdgeInsets(top: 15, bottom: 15)
 //    open var defaultItemsMargins = UIEdgeInsets(top: 2, left: 0, bottom: 2, right: 0) // Applied to items
 //    open var itemsMargins = UIEdgeInsets(top: 4, bottom: 4)
 //    open var actionsMargins = UIEdgeInsets(top: 4, bottom: 4)
