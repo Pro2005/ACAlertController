@@ -89,7 +89,6 @@ class TabledItemsViewProvider: NSObject, ACAlertListViewProvider, UIGestureRecog
     // MARK: Touch recogniser
     @objc fileprivate func handleRecognizer(_ recognizer: ACTouchGestureRecognizer) {
         
-//        print(recognizer.state.rawValue)
         let point = recognizer.location(in: actionsView)
         
         for (button, action) in buttonsAndActions
@@ -101,7 +100,6 @@ class TabledItemsViewProvider: NSObject, ACAlertListViewProvider, UIGestureRecog
             action.highlight(isHighlighted)
             
             if isActive && recognizer.state == .ended {
-                print("!!!")
                 callBlock(action)
             }
         }
@@ -270,7 +268,7 @@ class ACAlertControllerBase : UIViewController{
     public init() {
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .overFullScreen
-        //        transitioningDelegate = self
+        transitioningDelegate = self
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -392,6 +390,17 @@ class ACAlertControllerBase : UIViewController{
             }
             return (max2 / 2, max2 / 2)
         }
+    }
+}
+
+extension ACAlertControllerBase: UIViewControllerTransitioningDelegate {
+    
+    public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return ACAlertControllerAnimatedTransitioningBase(appearing: true)
+    }
+    
+    public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return ACAlertControllerAnimatedTransitioningBase(appearing: false)
     }
 }
 

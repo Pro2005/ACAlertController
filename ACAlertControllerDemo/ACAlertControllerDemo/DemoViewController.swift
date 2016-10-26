@@ -9,8 +9,6 @@
 import UIKit
 
 class DemoViewController: UIViewController {
-
-    var alert: ACAlertControllerBase!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,52 +53,51 @@ extension DemoViewController {
     
     @IBAction func newOne() {
         
-        if alert == nil {
-            alert = ACAlertControllerBase()
-            for _ in 1...1 {
-                alert.addItem(createLabel("Short text"))
-                alert.addItem(UIImageView(image: UIImage(named: "Details Icon")))
-                alert.addItem(UIImageView(image: UIImage(named: "Checklist Icon OK")))
-                alert.addItem(UIImageView(image: UIImage(named: "Details Icon")))
-                alert.addItem(createLabel("Мой дядя самых честных правил !!!! когда не в шутку занемог, он уважать себя заставил и лучше выдумать не мог."))
-                alert.addItem(UIImageView(image: UIImage(named: "Checklist Icon OK")))
-            }
-            
-//            alert.addAction(ACAlertAction(view: UIImageView(image: UIImage(named: "Checklist Icon OK")), handler: { (_) in
-//                print("Action Details")
-//            }))
-//            alert.addAction(ACAlertAction(view: UIImageView(image: UIImage(named: "Details Icon")), handler: { (_) in
-//                print("Action Details")
-//            }))
-//            let historyImageView = UIImageView(image: UIImage(named: "Details Icon"))
-//            historyImageView.setContentCompressionResistancePriority(995, for: .vertical)
-//            historyImageView.setContentHuggingPriority(995, for: .vertical)
-//            alert.addAction(ACAlertAction(view: historyImageView, handler: { (_) in
-//                print("Action History")
-//            }))
-//
-//            let action = ACAlertActionNative(title: "Disabled title", style: .default, handler: { (_) in
-//                print("Disabled")
-//            })
-//            action.enabled = false
-//            alert.addAction(action)
-//
-//            alert.addAction(ACAlertActionNative(title: "Destructive title", style: .destructive, handler: { (_) in
-//                print("Destructive")
-//            }))
-
-            alert.addAction(ACAlertActionNative(title: "A", style: .default, handler: { (_) in
-                print("Default")
-            }))
-            alert.addAction(ACAlertActionNative(title: "C", style: .cancel, handler: { (_) in
-                print("Cancel")
-            }))
-
-
-            view.addSubview(alert.view)
-            NSLayoutConstraint(item: view, attribute: .centerX, relatedBy: .equal, toItem: alert.view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
-            NSLayoutConstraint(item: view, attribute: .centerY, relatedBy: .equal, toItem: alert.view, attribute: .centerY, multiplier: 1, constant: 0).isActive = true
+        let alert = ACAlertControllerBase()
+        for _ in 1...1 {
+            alert.addItem(createLabel("Short text"))
+            alert.addItem(UIImageView(image: UIImage(named: "Details Icon")))
+            alert.addItem(UIImageView(image: UIImage(named: "Checklist Icon OK")))
+            alert.addItem(UIImageView(image: UIImage(named: "Details Icon")))
+            alert.addItem(createLabel("Мой дядя самых честных правил !!!! когда не в шутку занемог, он уважать себя заставил и лучше выдумать не мог."))
+            alert.addItem(UIImageView(image: UIImage(named: "Checklist Icon OK")))
         }
+        
+        alert.addAction(ACAlertAction(view: UIImageView(image: UIImage(named: "Checklist Icon OK")), handler: { (_) in
+            print("Action Details")
+        }))
+        alert.addAction(ACAlertAction(view: UIImageView(image: UIImage(named: "Details Icon")), handler: { (_) in
+            print("Action Details")
+        }))
+        let historyImageView = UIImageView(image: UIImage(named: "Details Icon"))
+        historyImageView.setContentCompressionResistancePriority(995, for: .vertical)
+        historyImageView.setContentHuggingPriority(995, for: .vertical)
+        alert.addAction(ACAlertAction(view: historyImageView, handler: { (_) in
+            print("Action History")
+        }))
+
+        let action = ACAlertActionNative(title: "Disabled title", style: .default, handler: { (_) in
+            print("Disabled")
+        })
+        action.enabled = false
+        alert.addAction(action)
+
+        alert.addAction(ACAlertActionNative(title: "Destructive title", style: .destructive, handler: { (_) in
+            print("Destructive")
+        }))
+
+        alert.addAction(ACAlertActionNative(title: "A", style: .default, handler: { (_) in
+            print("Default")
+        }))
+        alert.addAction(ACAlertActionNative(title: "C", style: .cancel, handler: { (_) in
+            print("Cancel")
+        }))
+
+        present(alert, animated: true)
+        
+//            view.addSubview(alert.view)
+//            NSLayoutConstraint(item: view, attribute: .centerX, relatedBy: .equal, toItem: alert.view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
+//            NSLayoutConstraint(item: view, attribute: .centerY, relatedBy: .equal, toItem: alert.view, attribute: .centerY, multiplier: 1, constant: 0).isActive = true
         
         
 //        let alert = ACAlertController(title: "Title", message: "Are you sure you want to Sign Out?")
