@@ -17,8 +17,8 @@ protocol ACAlertListViewProtocol {
 }
 
 protocol ACAlertListViewProvider {
-    func alertView(items : [(ACAlertItemProtocol, UIEdgeInsets)], width: CGFloat) -> ACAlertListViewProtocol
-    func alertView(actions : [(ACAlertActionProtocolBase, UIEdgeInsets)], width: CGFloat) -> ACAlertListViewProtocol
+    func alertView(items : [ACAlertItemProtocol], width: CGFloat) -> ACAlertListViewProtocol
+    func alertView(actions : [ACAlertActionProtocolBase], width: CGFloat) -> ACAlertListViewProtocol
 }
 
 class ACAlertListView: ACAlertListViewProtocol {
@@ -34,19 +34,20 @@ class ACAlertListView: ACAlertListViewProtocol {
 }
 
 class TabledItemsViewProvider: NSObject, ACAlertListViewProvider {
-    func alertView(items: [(ACAlertItemProtocol, UIEdgeInsets)], width: CGFloat) -> ACAlertListViewProtocol {
-        let views = items.map { (item, insets) in return (item.alertItemView, insets) }
+
+    func alertView(items: [ACAlertItemProtocol], width: CGFloat) -> ACAlertListViewProtocol {
+        let views = items.map { $0.alertItemView }
         
         return ACStackAlertListView(views: views, width: width)
     }
     
-    func alertView(actions: [(ACAlertActionProtocolBase, UIEdgeInsets)], width: CGFloat) -> ACAlertListViewProtocol {
+    func alertView(actions: [ACAlertActionProtocolBase], width: CGFloat) -> ACAlertListViewProtocol {
         
-        let views = actions.map { (action, insets) in return (buttonView(action: action), insets) }
+        let views = actions.map { buttonView(action: $0) }
         
         if views.count == 2 {
-            let button1 = views[0].0
-            let button2 = views[1].0
+            let button1 = views[0]
+            let button2 = views[1]
             button1.layoutIfNeeded()
             button2.layoutIfNeeded()
             
@@ -59,7 +60,7 @@ class TabledItemsViewProvider: NSObject, ACAlertListViewProvider {
             }
         }
         
-        let views2 = views.flatMap { [$0, (separatorView(), UIEdgeInsets())] }.dropLast()
+        let views2 = views.flatMap { [$0, separatorView()] }.dropLast()
         return ACStackAlertListView2(views: Array(views2), width: width)
     }
     
@@ -109,9 +110,9 @@ class ACStackAlertListView: ACAlertListViewProtocol {
     
     var margins = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
     
-    init(views: [(UIView, UIEdgeInsets)], width: CGFloat) {
+    init(views: [UIView], width: CGFloat) {
 
-        stackView = UIStackView(arrangedSubviews: views.map { $0.0 } )
+        stackView = UIStackView(arrangedSubviews: views )
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.distribution = .equalSpacing
@@ -139,9 +140,9 @@ class ACStackAlertListView2: ACAlertListViewProtocol {
     
     var margins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     
-    init(views: [(UIView, UIEdgeInsets)], width: CGFloat) {
+    init(views: [UIView], width: CGFloat) {
         
-        stackView = UIStackView(arrangedSubviews: views.map { $0.0 } )
+        stackView = UIStackView(arrangedSubviews: views )
         stackView.axis = .vertical
         stackView.alignment = .fill
         stackView.distribution = .equalSpacing
@@ -192,8 +193,8 @@ class ACStackAlertListView3: ACAlertListViewProtocol {
 
 class ACAlertControllerBase : UIViewController{
 
-    fileprivate(set) open var items: [(ACAlertItemProtocol, UIEdgeInsets)] = []
-    fileprivate(set) open var actions: [(ACAlertActionProtocolBase, UIEdgeInsets)] = []
+    fileprivate(set) open var items: [ACAlertItemProtocol] = []
+    fileprivate(set) open var actions: [ACAlertActionProtocolBase] = []
     
 //    open var items: [ACAlertItemProtocol] { return items.map{ $0.0 } }
 //    fileprivate(set) open var actions: [ACAlertActionProtocol] = []
@@ -201,7 +202,7 @@ class ACAlertControllerBase : UIViewController{
     open var backgroundColor = UIColor(white: 248/256, alpha: 1)
     
     open var viewMargins = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0)//UIEdgeInsets(top: 15, bottom: 15)
-    open var defaultItemsMargins = UIEdgeInsets(top: 2, left: 0, bottom: 2, right: 0) // Applied to items
+//    open var defaultItemsMargins = UIEdgeInsets(top: 2, left: 0, bottom: 2, right: 0) // Applied to items
 //    open var itemsMargins = UIEdgeInsets(top: 4, bottom: 4)
 //    open var actionsMargins = UIEdgeInsets(top: 4, bottom: 4)
     
@@ -233,20 +234,20 @@ class ACAlertControllerBase : UIViewController{
         fatalError("init(coder:) has not been implemented")
     }
     
-    open func addItem(_ item: ACAlertItemProtocol, inset: UIEdgeInsets? = nil) {
+    open func addItem(_ item: ACAlertItemProtocol) {
         guard isBeingPresented == false else {
             print("ACAlertController could not be modified if it is already presented")
             return
         }
-        items.append((item, inset ?? defaultItemsMargins))
+        items.append(item)
     }
     
-    open func addAction(_ action: ACAlertActionProtocolBase, inset: UIEdgeInsets? = nil) {
+    open func addAction(_ action: ACAlertActionProtocolBase) {
         guard isBeingPresented == false else {
             print("ACAlertController could not be modified if it is already presented")
             return
         }
-        actions.append((action, inset ?? defaultItemsMargins))
+        actions.append(action)
     }
     
     override func loadView() {
