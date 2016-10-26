@@ -69,13 +69,15 @@ open class ACAlertActionNative: ACAlertActionProtocolBase {
     
     lazy open var alertView: UIView = {
         let label = UILabel()
+        let blueColor = UIColor(red:0.31, green:0.75, blue:0.87, alpha:1.0)
+        let redColor = UIColor(red:0.82, green:0.01, blue:0.11, alpha:1.0)
         
         let fontSize: CGFloat = 17
         label.font = self.style == .cancel ? UIFont.boldSystemFont(ofSize: fontSize) :  UIFont.systemFont(ofSize: fontSize)
         label.minimumScaleFactor = 0.5
         
-        let normalColor = self.enabled ? label.tintColor : UIColor.gray
-        label.textColor = self.style == .destructive ? UIColor.red : normalColor
+        let normalColor = self.enabled ? blueColor : UIColor.gray
+        label.textColor = self.style == .destructive ? redColor : normalColor
         
         label.text = self.title
         
