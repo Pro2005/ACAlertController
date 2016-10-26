@@ -17,7 +17,7 @@ protocol ACAlertListViewProtocol {
 }
 
 protocol ACAlertListViewProvider {
-    func set(alertView: UIView, actionsView: UIView, callBlock: @escaping (ACAlertActionProtocolBase) -> Void) -> Void
+    func set(alertView: UIView, itemsView: UIView?, actionsView: UIView?, callBlock: @escaping (ACAlertActionProtocolBase) -> Void) -> Void
     func alertView(items : [ACAlertItemProtocol], width: CGFloat) -> ACAlertListViewProtocol
     func alertView(actions : [ACAlertActionProtocolBase], width: CGFloat) -> ACAlertListViewProtocol
 }
@@ -34,7 +34,7 @@ class ACAlertListView: ACAlertListViewProtocol {
     }
 }
 
-class TabledItemsViewProvider: NSObject, ACAlertListViewProvider, UIGestureRecognizerDelegate {
+class StackViewProvider: NSObject, ACAlertListViewProvider, UIGestureRecognizerDelegate {
 
     func alertView(items: [ACAlertItemProtocol], width: CGFloat) -> ACAlertListViewProtocol {
         let views = items.map { $0.alertItemView }
@@ -66,12 +66,11 @@ class TabledItemsViewProvider: NSObject, ACAlertListViewProvider, UIGestureRecog
         return ACStackAlertListView2(views: Array(views2), width: width)
     }
     
-    var alertView: UIView!
     var actionsView: UIView!
     var callBlock:((ACAlertActionProtocolBase) -> Void)!
     
-    func set(alertView: UIView, actionsView: UIView, callBlock:@escaping (ACAlertActionProtocolBase) -> Void) -> Void {
-        self.alertView = alertView
+    func set(alertView: UIView, itemsView: UIView?, actionsView: UIView?, callBlock:@escaping (ACAlertActionProtocolBase) -> Void) -> Void {
+
         self.actionsView = actionsView
         self.callBlock = callBlock
         
@@ -80,6 +79,18 @@ class TabledItemsViewProvider: NSObject, ACAlertListViewProvider, UIGestureRecog
         recognizer.allowableMovement = CGFloat.greatestFiniteMagnitude
         recognizer.cancelsTouchesInView = false
         recognizer.delegate = self
+        
+        if let superRecognizers = actionsView?.gestureRecognizers {
+            for r in superRecognizers {
+                recognizer.require(toFail: r)
+            }
+        }
+        if let superRecognizers = itemsView?.gestureRecognizers {
+            for r in superRecognizers {
+                recognizer.require(toFail: r)
+            }
+        }
+        
         alertView.addGestureRecognizer(recognizer)
     }
     
@@ -251,7 +262,7 @@ class ACAlertControllerBase : UIViewController{
     open var cornerRadius: CGFloat = 16
     var separatorHeight: CGFloat = 0.5
     
-    var alertListsProvider: ACAlertListViewProvider = TabledItemsViewProvider()
+    var alertListsProvider: ACAlertListViewProvider = StackViewProvider()
     
     var itemsAlertList: ACAlertListViewProtocol?
     var actionsAlertList: ACAlertListViewProtocol?
@@ -350,14 +361,12 @@ class ACAlertControllerBase : UIViewController{
             }
         }
         
-        if let actionsView = actionsAlertList?.view {
-            alertListsProvider.set(alertView: view, actionsView: actionsView) { (action) in
-                self.presentingViewController?.dismiss(animated: true, completion: {
-                    DispatchQueue.main.async(execute: {
-                        action.call()
-                    })
+        alertListsProvider.set(alertView: view, itemsView: itemsAlertList?.view, actionsView: actionsAlertList?.view) { (action) in
+            self.presentingViewController?.dismiss(animated: true, completion: {
+                DispatchQueue.main.async(execute: {
+                    action.call()
                 })
-            }
+            })
         }
     }
     
@@ -421,6 +430,13 @@ class Layout {
     class func setOptional(height: CGFloat, view: UIView) {
         
         let constraint = NSLayoutConstraint(item: view, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: height)
+        constraint.priority = nonMandatoryConstraintPriority
+        constraint.isActive = true
+    }
+    
+    class func setOptional(width: CGFloat, view: UIView) {
+        
+        let constraint = NSLayoutConstraint(item: view, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: width)
         constraint.priority = nonMandatoryConstraintPriority
         constraint.isActive = true
     }
