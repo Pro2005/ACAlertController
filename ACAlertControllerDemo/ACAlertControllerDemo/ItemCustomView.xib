@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view userInteractionEnabled="NO" contentMode="scaleToFill" id="iN0-l3-epB" customClass="ItemCustomView" customModule="ACAlertControllerDemo" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="338" height="45"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label1" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aPo-Zl-xux">
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" red="0.31372549020000001" green="0.74901960779999999" blue="0.87058823529999996" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label2" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rVl-mS-Y3A">
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label3" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ix1-vV-jDI">
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailingMargin" secondItem="aPo-Zl-xux" secondAttribute="trailing" id="HTs-XG-Dpb"/>
+                <constraint firstItem="rVl-mS-Y3A" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottomMargin" id="IKS-U5-AEI"/>
+                <constraint firstAttribute="trailingMargin" secondItem="Ix1-vV-jDI" secondAttribute="trailing" id="PDb-Rc-4bw"/>
+                <constraint firstItem="aPo-Zl-xux" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="dXC-fn-xeC"/>
+                <constraint firstItem="Ix1-vV-jDI" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="rVl-mS-Y3A" secondAttribute="trailing" constant="8" id="gW0-wB-9lk"/>
+                <constraint firstItem="aPo-Zl-xux" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" id="mlQ-rw-Bx3"/>
+                <constraint firstAttribute="bottomMargin" secondItem="Ix1-vV-jDI" secondAttribute="bottom" id="ste-F1-kRm"/>
+                <constraint firstItem="rVl-mS-Y3A" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="vck-sH-edE"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <edgeInsets key="layoutMargins" top="4" left="8" bottom="4" right="8"/>
+            <connections>
+                <outlet property="label1" destination="aPo-Zl-xux" id="vLg-mN-gMl"/>
+                <outlet property="label2" destination="rVl-mS-Y3A" id="cwd-DT-YzP"/>
+                <outlet property="label3" destination="Ix1-vV-jDI" id="Hfs-3f-01d"/>
+            </connections>
+            <point key="canvasLocation" x="15" y="-179"/>
+        </view>
+    </objects>
+</document>

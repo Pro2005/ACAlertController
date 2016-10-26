@@ -18,6 +18,8 @@
 		D25E51E41D92870E0098CDF9 /* ACAlertControllerCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25E51E31D92870E0098CDF9 /* ACAlertControllerCore.swift */; };
 		D25E51E61D92873A0098CDF9 /* ACAlertItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25E51E51D92873A0098CDF9 /* ACAlertItem.swift */; };
 		D25E51E81D9287890098CDF9 /* ACAlertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25E51E71D9287890098CDF9 /* ACAlertAction.swift */; };
+		D28EC5791DC0CFC500169D4D /* ItemCustomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D28EC5781DC0CFC500169D4D /* ItemCustomView.xib */; };
+		D28EC57B1DC0D08600169D4D /* ItemCustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28EC57A1DC0D08600169D4D /* ItemCustomView.swift */; };
 		D2C712CA1DBD101E00B6C827 /* ACAlertControllerExtended.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C712C91DBD101E00B6C827 /* ACAlertControllerExtended.swift */; };
 /* End PBXBuildFile section */
 
@@ -35,6 +37,8 @@
 		D25E51E31D92870E0098CDF9 /* ACAlertControllerCore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACAlertControllerCore.swift; sourceTree = "<group>"; };
 		D25E51E51D92873A0098CDF9 /* ACAlertItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACAlertItem.swift; sourceTree = "<group>"; };
 		D25E51E71D9287890098CDF9 /* ACAlertAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACAlertAction.swift; sourceTree = "<group>"; };
+		D28EC5781DC0CFC500169D4D /* ItemCustomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ItemCustomView.xib; sourceTree = "<group>"; };
+		D28EC57A1DC0D08600169D4D /* ItemCustomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemCustomView.swift; sourceTree = "<group>"; };
 		D2C712C91DBD101E00B6C827 /* ACAlertControllerExtended.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACAlertControllerExtended.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -75,6 +79,8 @@
 				D2428C791D1B1168006B3036 /* Assets.xcassets */,
 				D2428C7B1D1B1168006B3036 /* LaunchScreen.storyboard */,
 				D2428C7E1D1B1168006B3036 /* Info.plist */,
+				D28EC5781DC0CFC500169D4D /* ItemCustomView.xib */,
+				D28EC57A1DC0D08600169D4D /* ItemCustomView.swift */,
 			);
 			path = ACAlertControllerDemo;
 			sourceTree = "<group>";
@@ -161,6 +167,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D28EC5791DC0CFC500169D4D /* ItemCustomView.xib in Resources */,
 				D2428C7D1D1B1168006B3036 /* LaunchScreen.storyboard in Resources */,
 				D2428C7A1D1B1168006B3036 /* Assets.xcassets in Resources */,
 				D2428C8E1D1B1314006B3036 /* DemoViewController.xib in Resources */,
@@ -179,6 +186,7 @@
 				D2428C731D1B1168006B3036 /* AppDelegate.swift in Sources */,
 				D25E51E41D92870E0098CDF9 /* ACAlertControllerCore.swift in Sources */,
 				D2428C891D1B12E1006B3036 /* ACAlertController0.swift in Sources */,
+				D28EC57B1DC0D08600169D4D /* ItemCustomView.swift in Sources */,
 				D2C712CA1DBD101E00B6C827 /* ACAlertControllerExtended.swift in Sources */,
 				D2428C8D1D1B1314006B3036 /* DemoViewController.swift in Sources */,
 				D2428C881D1B12E1006B3036 /* ACAlertControllerAnimatedTransitioning.swift in Sources */,

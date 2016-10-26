@@ -54,6 +54,9 @@ extension DemoViewController {
     @IBAction func newOne() {
         
         let alert = ACAlertControllerBase()
+        for i in 1...3 {
+            alert.addItem(ItemCustomView.newCustomView(text1: "Some text \(i) here!", text2: "Some Text \(i) here also!!", text3: "Just \(i)!!!")!)
+        }
         for _ in 1...1 {
             alert.addItem(createLabel("Short text"))
             alert.addItem(UIImageView(image: UIImage(named: "Details Icon")))
@@ -61,6 +64,13 @@ extension DemoViewController {
             alert.addItem(UIImageView(image: UIImage(named: "Details Icon")))
             alert.addItem(createLabel("Мой дядя самых честных правил !!!! когда не в шутку занемог, он уважать себя заставил и лучше выдумать не мог."))
             alert.addItem(UIImageView(image: UIImage(named: "Checklist Icon OK")))
+        }
+        
+        for i in 1...3 {
+            let buttonView = ItemCustomView.newCustomView(text1: "Button text \(i) here!", text2: "Button Text \(i) here also!!", text3: "Just \(i)!!!")!
+            alert.addAction(ACAlertAction(view: buttonView, handler: { (_) in
+                print("Custom button \(i)")
+            }))
         }
         
         alert.addAction(ACAlertAction(view: UIImageView(image: UIImage(named: "Checklist Icon OK")), handler: { (_) in
