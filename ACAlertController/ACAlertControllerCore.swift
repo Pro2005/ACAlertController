@@ -11,38 +11,26 @@ import UIKit
 
 public var alertLinesColor = UIColor(red:220/256, green:220/256, blue:224/256, alpha:1.0)
 
-protocol ACAlertListViewProtocol {
+public protocol ACAlertListViewProtocol {
     var contentHeight: CGFloat { get }
     var view: UIView { get }
 }
 
-protocol ACAlertListViewProvider {
+public protocol ACAlertListViewProvider {
     func set(alertView: UIView, itemsView: UIView?, actionsView: UIView?, callBlock: @escaping (ACAlertActionProtocolBase) -> Void) -> Void
     func alertView(items : [ACAlertItemProtocol], width: CGFloat) -> ACAlertListViewProtocol
     func alertView(actions : [ACAlertActionProtocolBase], width: CGFloat) -> ACAlertListViewProtocol
 }
 
-class ACAlertListView: ACAlertListViewProtocol {
+open class StackViewProvider: NSObject, ACAlertListViewProvider, UIGestureRecognizerDelegate {
 
-    var contentHeight: CGFloat = 0
-    var view: UIView = UIView()
-    
-    init(height: CGFloat, color: UIColor) {
-        contentHeight = height
-        view.backgroundColor = color
-        view.translatesAutoresizingMaskIntoConstraints = false
-    }
-}
-
-class StackViewProvider: NSObject, ACAlertListViewProvider, UIGestureRecognizerDelegate {
-
-    func alertView(items: [ACAlertItemProtocol], width: CGFloat) -> ACAlertListViewProtocol {
+    open func alertView(items: [ACAlertItemProtocol], width: CGFloat) -> ACAlertListViewProtocol {
         let views = items.map { $0.alertItemView }
         
         return ACStackAlertListView(views: views, width: width)
     }
     
-    func alertView(actions: [ACAlertActionProtocolBase], width: CGFloat) -> ACAlertListViewProtocol {
+    open func alertView(actions: [ACAlertActionProtocolBase], width: CGFloat) -> ACAlertListViewProtocol {
         
         buttonsAndActions = actions.map { (buttonView(action: $0), $0) }
         let views = buttonsAndActions.map { $0.0 }
@@ -66,10 +54,10 @@ class StackViewProvider: NSObject, ACAlertListViewProvider, UIGestureRecognizerD
         return ACStackAlertListView2(views: Array(views2), width: width)
     }
     
-    var actionsView: UIView!
-    var callBlock:((ACAlertActionProtocolBase) -> Void)!
+    open var actionsView: UIView!
+    open var callBlock:((ACAlertActionProtocolBase) -> Void)!
     
-    func set(alertView: UIView, itemsView: UIView?, actionsView: UIView?, callBlock:@escaping (ACAlertActionProtocolBase) -> Void) -> Void {
+    open func set(alertView: UIView, itemsView: UIView?, actionsView: UIView?, callBlock:@escaping (ACAlertActionProtocolBase) -> Void) -> Void {
 
         self.actionsView = actionsView
         self.callBlock = callBlock
@@ -94,11 +82,11 @@ class StackViewProvider: NSObject, ACAlertListViewProvider, UIGestureRecognizerD
         alertView.addGestureRecognizer(recognizer)
     }
     
-    var buttonsAndActions: [(UIView, ACAlertActionProtocolBase)] = []
+    open var buttonsAndActions: [(UIView, ACAlertActionProtocolBase)] = []
     open var buttonHighlightColor = UIColor(white: 0.9, alpha: 1)
     
     // MARK: Touch recogniser
-    @objc fileprivate func handleRecognizer(_ recognizer: ACTouchGestureRecognizer) {
+    @objc open func handleRecognizer(_ recognizer: UILongPressGestureRecognizer) {
         
         let point = recognizer.location(in: actionsView)
         
@@ -119,7 +107,7 @@ class StackViewProvider: NSObject, ACAlertListViewProvider, UIGestureRecognizerD
     open var buttonsMargins = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8) // Applied to buttons
     open var defaultButtonHeight: CGFloat = 45
     
-    fileprivate func buttonView(action: ACAlertActionProtocolBase) -> UIView {
+    open func buttonView(action: ACAlertActionProtocolBase) -> UIView {
         
         let actionView = action.alertView
         actionView.translatesAutoresizingMaskIntoConstraints = false
@@ -136,7 +124,7 @@ class StackViewProvider: NSObject, ACAlertListViewProvider, UIGestureRecognizerD
         return button
     }
     
-    fileprivate func separatorView() -> UIView {
+    open func separatorView() -> UIView {
         let view = UIView()
         view.backgroundColor = alertLinesColor
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -144,7 +132,7 @@ class StackViewProvider: NSObject, ACAlertListViewProvider, UIGestureRecognizerD
         return view
     }
 
-    fileprivate func separatorView2() -> UIView {
+    open func separatorView2() -> UIView {
         let view = UIView()
         view.backgroundColor = alertLinesColor
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -153,16 +141,16 @@ class StackViewProvider: NSObject, ACAlertListViewProvider, UIGestureRecognizerD
     }
 }
 
-class ACStackAlertListView: ACAlertListViewProtocol {
-    var view: UIView { return scrollView }
-    var contentHeight: CGFloat
+open class ACStackAlertListView: ACAlertListViewProtocol {
+    public var view: UIView { return scrollView }
+    public var contentHeight: CGFloat
     
-    let stackView: UIStackView
-    let scrollView = UIScrollView()
+    open let stackView: UIStackView
+    open let scrollView = UIScrollView()
     
-    var margins = UIEdgeInsets(top: 10, left: 5, bottom: 10, right: 5)
+    open var margins = UIEdgeInsets(top: 10, left: 5, bottom: 10, right: 5)
     
-    init(views: [UIView], width: CGFloat) {
+    public init(views: [UIView], width: CGFloat) {
 
         stackView = UIStackView(arrangedSubviews: views )
         stackView.axis = .vertical
@@ -183,16 +171,16 @@ class ACStackAlertListView: ACAlertListViewProtocol {
     }
 }
 
-class ACStackAlertListView2: ACAlertListViewProtocol {
-    var view: UIView { return scrollView }
-    var contentHeight: CGFloat
+open class ACStackAlertListView2: ACAlertListViewProtocol {
+    open var view: UIView { return scrollView }
+    open var contentHeight: CGFloat
     
-    let stackView: UIStackView
-    let scrollView = UIScrollView()
+    open let stackView: UIStackView
+    open let scrollView = UIScrollView()
     
-    var margins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    open var margins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     
-    init(views: [UIView], width: CGFloat) {
+    public init(views: [UIView], width: CGFloat) {
         
         stackView = UIStackView(arrangedSubviews: views )
         stackView.axis = .vertical
@@ -213,16 +201,16 @@ class ACStackAlertListView2: ACAlertListViewProtocol {
     }
 }
 
-class ACStackAlertListView3: ACAlertListViewProtocol {
-    var view: UIView { return scrollView }
-    var contentHeight: CGFloat
+open class ACStackAlertListView3: ACAlertListViewProtocol {
+    open var view: UIView { return scrollView }
+    open var contentHeight: CGFloat
     
-    let stackView: UIStackView
-    let scrollView = UIScrollView()
+    open let stackView: UIStackView
+    open let scrollView = UIScrollView()
     
-    var margins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    open var margins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     
-    init(views: [UIView], width: CGFloat) {
+    public init(views: [UIView], width: CGFloat) {
         
         stackView = UIStackView(arrangedSubviews: views )
         stackView.axis = .horizontal
@@ -243,7 +231,7 @@ class ACStackAlertListView3: ACAlertListViewProtocol {
     }
 }
 
-class ACAlertControllerBase : UIViewController{
+open class ACAlertController : UIViewController{
 
     fileprivate(set) open var items: [ACAlertItemProtocol] = []
     fileprivate(set) open var actions: [ACAlertActionProtocolBase] = []
@@ -260,14 +248,14 @@ class ACAlertControllerBase : UIViewController{
     
     open var alertWidth: CGFloat = 270
     open var cornerRadius: CGFloat = 16
-    var separatorHeight: CGFloat = 0.5
+    open var separatorHeight: CGFloat = 0.5
     
-    var alertListsProvider: ACAlertListViewProvider = StackViewProvider()
+    open var alertListsProvider: ACAlertListViewProvider = StackViewProvider()
     
-    var itemsAlertList: ACAlertListViewProtocol?
-    var actionsAlertList: ACAlertListViewProtocol?
+    open var itemsAlertList: ACAlertListViewProtocol?
+    open var actionsAlertList: ACAlertListViewProtocol?
     
-    var separatorView: UIView = {
+    open var separatorView: UIView = {
         let view = UIView()
         view.backgroundColor = alertLinesColor
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -302,7 +290,7 @@ class ACAlertControllerBase : UIViewController{
         actions.append(action)
     }
     
-    override func loadView() {
+    override open func loadView() {
         view = UIView()
         view.backgroundColor = backgroundColor
         view.layer.cornerRadius = cornerRadius
@@ -320,7 +308,7 @@ class ACAlertControllerBase : UIViewController{
         setContentView(view: contentView)
     }
     
-    func setContentView(view: UIView) {
+    open func setContentView(view: UIView) {
         
         if hasItems {
             itemsAlertList = alertListsProvider.alertView(items: items, width: alertWidth - viewMargins.leftPlusRight)
@@ -370,11 +358,11 @@ class ACAlertControllerBase : UIViewController{
         }
     }
     
-    var hasItems: Bool { return items.count > 0 }
-    var hasActions: Bool { return actions.count > 0 }
-    var maxViewHeight: CGFloat { return UIScreen.main.bounds.height - 80 }
+    open var hasItems: Bool { return items.count > 0 }
+    open var hasActions: Bool { return actions.count > 0 }
+    open var maxViewHeight: CGFloat { return UIScreen.main.bounds.height - 80 }
     
-    func elementsHeights() -> (itemsHeight: CGFloat?, actionsHeight: CGFloat?) {
+    open func elementsHeights() -> (itemsHeight: CGFloat?, actionsHeight: CGFloat?) {
         let max = maxViewHeight - viewMargins.topPlusBottom
         
         switch (itemsAlertList?.contentHeight, actionsAlertList?.contentHeight) {
@@ -402,7 +390,7 @@ class ACAlertControllerBase : UIViewController{
     }
 }
 
-extension ACAlertControllerBase: UIViewControllerTransitioningDelegate {
+extension ACAlertController: UIViewControllerTransitioningDelegate {
     
     public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return ACAlertControllerAnimatedTransitioningBase(appearing: true)
@@ -413,35 +401,35 @@ extension ACAlertControllerBase: UIViewControllerTransitioningDelegate {
     }
 }
 
-class Layout {
+open class Layout {
     
     open static var nonMandatoryConstraintPriority: UILayoutPriority = 700 // Item's and action's constraints that could conflict with ACAlertController constraints should have priorities in [nonMandatoryConstraintPriority ..< 1000] range.
     
-    class func set(width: CGFloat, view: UIView) {
+    open class func set(width: CGFloat, view: UIView) {
         
         NSLayoutConstraint(item: view, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: width).isActive = true
     }
     
-    class func set(height: CGFloat, view: UIView) {
+    open class func set(height: CGFloat, view: UIView) {
         
         NSLayoutConstraint(item: view, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: height).isActive = true
     }
 
-    class func setOptional(height: CGFloat, view: UIView) {
+    open class func setOptional(height: CGFloat, view: UIView) {
         
         let constraint = NSLayoutConstraint(item: view, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: height)
         constraint.priority = nonMandatoryConstraintPriority
         constraint.isActive = true
     }
     
-    class func setOptional(width: CGFloat, view: UIView) {
+    open class func setOptional(width: CGFloat, view: UIView) {
         
         let constraint = NSLayoutConstraint(item: view, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: width)
         constraint.priority = nonMandatoryConstraintPriority
         constraint.isActive = true
     }
     
-    class func setInCenter(view: UIView, subview: UIView, margins: Bool) {
+    open class func setInCenter(view: UIView, subview: UIView, margins: Bool) {
         
         NSLayoutConstraint(item: view, attribute: margins ? .leadingMargin : .leading, relatedBy: .lessThanOrEqual, toItem: subview, attribute: .leading, multiplier: 1, constant: 0).isActive = true
         
@@ -460,7 +448,7 @@ class Layout {
         centerY.isActive = true
     }
     
-    class func setEqual(view: UIView, subview: UIView, margins: Bool) {
+    open class func setEqual(view: UIView, subview: UIView, margins: Bool) {
         
         NSLayoutConstraint(item: view, attribute: margins ? .leftMargin : .left, relatedBy: .equal, toItem: subview, attribute: .left, multiplier: 1, constant: 0).isActive = true
         
@@ -471,32 +459,32 @@ class Layout {
         NSLayoutConstraint(item: view, attribute: margins ? .bottomMargin: .bottom, relatedBy: .equal, toItem: subview, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
     }
 
-    class func setEqualLeftAndRight(view: UIView, subview: UIView, margins: Bool) {
+    open class func setEqualLeftAndRight(view: UIView, subview: UIView, margins: Bool) {
         
         NSLayoutConstraint(item: view, attribute: margins ? .leftMargin : .left, relatedBy: .equal, toItem: subview, attribute: .left, multiplier: 1, constant: 0).isActive = true
         
         NSLayoutConstraint(item: view, attribute: margins ? .rightMargin : .right, relatedBy: .equal, toItem: subview, attribute: .right, multiplier: 1, constant: 0).isActive = true
     }
     
-    class func setEqualTop(view: UIView, subview: UIView, margins: Bool) {
+    open class func setEqualTop(view: UIView, subview: UIView, margins: Bool) {
         NSLayoutConstraint(item: view, attribute: margins ? .topMargin : .top, relatedBy: .equal, toItem: subview, attribute: .top, multiplier: 1, constant: 0).isActive = true
     }
     
-    class func setEqualBottom(view: UIView, subview: UIView, margins: Bool) {
+    open class func setEqualBottom(view: UIView, subview: UIView, margins: Bool) {
         
         NSLayoutConstraint(item: view, attribute: margins ? .bottomMargin : .bottom, relatedBy: .equal, toItem: subview, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
     }
     
-    class func setBottomToTop(topView: UIView, bottomView: UIView) {
+    open class func setBottomToTop(topView: UIView, bottomView: UIView) {
         
         NSLayoutConstraint(item: topView, attribute: .bottom, relatedBy: .equal, toItem: bottomView, attribute: .top, multiplier: 1, constant: 0).isActive = true
     }
 }
 
-extension UIEdgeInsets {
-    var topPlusBottom: CGFloat { return top + bottom }
-    var leftPlusRight: CGFloat { return left + right }
-    init(top: CGFloat, bottom: CGFloat) {
+public extension UIEdgeInsets {
+    public var topPlusBottom: CGFloat { return top + bottom }
+    public var leftPlusRight: CGFloat { return left + right }
+    public init(top: CGFloat, bottom: CGFloat) {
         self.init(top: top, left: 0, bottom: bottom, right: 0)
     }
 }

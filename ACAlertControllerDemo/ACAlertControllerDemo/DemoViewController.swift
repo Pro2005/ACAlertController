@@ -53,7 +53,7 @@ extension DemoViewController {
     
     @IBAction func newOne() {
         
-        let alert = ACAlertControllerBase()
+        let alert = ACAlertController()
         for i in 1...3 {
             alert.addItem(ItemCustomView.newCustomView(text1: "Some text \(i) here!", text2: "Some Text \(i) here also!!", text3: "Just \(i)!!!")!)
         }
