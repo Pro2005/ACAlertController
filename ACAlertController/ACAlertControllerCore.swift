@@ -17,6 +17,7 @@ protocol ACAlertListViewProtocol {
 }
 
 protocol ACAlertListViewProvider {
+    func set(alertView: UIView, actionsView: UIView, callBlock: @escaping (ACAlertActionProtocolBase) -> Void) -> Void
     func alertView(items : [ACAlertItemProtocol], width: CGFloat) -> ACAlertListViewProtocol
     func alertView(actions : [ACAlertActionProtocolBase], width: CGFloat) -> ACAlertListViewProtocol
 }
@@ -33,7 +34,7 @@ class ACAlertListView: ACAlertListViewProtocol {
     }
 }
 
-class TabledItemsViewProvider: NSObject, ACAlertListViewProvider {
+class TabledItemsViewProvider: NSObject, ACAlertListViewProvider, UIGestureRecognizerDelegate {
 
     func alertView(items: [ACAlertItemProtocol], width: CGFloat) -> ACAlertListViewProtocol {
         let views = items.map { $0.alertItemView }
@@ -43,7 +44,8 @@ class TabledItemsViewProvider: NSObject, ACAlertListViewProvider {
     
     func alertView(actions: [ACAlertActionProtocolBase], width: CGFloat) -> ACAlertListViewProtocol {
         
-        let views = actions.map { buttonView(action: $0) }
+        buttonsAndActions = actions.map { (buttonView(action: $0), $0) }
+        let views = buttonsAndActions.map { $0.0 }
         
         if views.count == 2 {
             let button1 = views[0]
@@ -64,6 +66,47 @@ class TabledItemsViewProvider: NSObject, ACAlertListViewProvider {
         return ACStackAlertListView2(views: Array(views2), width: width)
     }
     
+    var alertView: UIView!
+    var actionsView: UIView!
+    var callBlock:((ACAlertActionProtocolBase) -> Void)!
+    
+    func set(alertView: UIView, actionsView: UIView, callBlock:@escaping (ACAlertActionProtocolBase) -> Void) -> Void {
+        self.alertView = alertView
+        self.actionsView = actionsView
+        self.callBlock = callBlock
+        
+        let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleRecognizer))
+        recognizer.minimumPressDuration = 0.0
+        recognizer.allowableMovement = CGFloat.greatestFiniteMagnitude
+        recognizer.cancelsTouchesInView = false
+        recognizer.delegate = self
+        alertView.addGestureRecognizer(recognizer)
+    }
+    
+    var buttonsAndActions: [(UIView, ACAlertActionProtocolBase)] = []
+    open var buttonHighlightColor = UIColor(white: 0.9, alpha: 1)
+    
+    // MARK: Touch recogniser
+    @objc fileprivate func handleRecognizer(_ recognizer: ACTouchGestureRecognizer) {
+        
+//        print(recognizer.state.rawValue)
+        let point = recognizer.location(in: actionsView)
+        
+        for (button, action) in buttonsAndActions
+        {
+            let isActive = button.frame.contains(point) && action.enabled
+            let isHighlighted = isActive && (recognizer.state == .began || recognizer.state == .changed)
+            
+            button.backgroundColor = isHighlighted ? buttonHighlightColor : UIColor.clear
+            action.highlight(isHighlighted)
+            
+            if isActive && recognizer.state == .ended {
+                print("!!!")
+                callBlock(action)
+            }
+        }
+    }
+
     open var buttonsMargins = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8) // Applied to buttons
     open var defaultButtonHeight: CGFloat = 45
     
@@ -306,6 +349,16 @@ class ACAlertControllerBase : UIViewController{
                 
             } else {
                 Layout.setEqualBottom(view: view, subview: topSubview, margins: true)
+            }
+        }
+        
+        if let actionsView = actionsAlertList?.view {
+            alertListsProvider.set(alertView: view, actionsView: actionsView) { (action) in
+                self.presentingViewController?.dismiss(animated: true, completion: {
+                    DispatchQueue.main.async(execute: {
+                        action.call()
+                    })
+                })
             }
         }
     }
