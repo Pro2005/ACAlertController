@@ -34,10 +34,10 @@ extension ACAlertActionProtocol {
 }
 // MARK: -
 
-open class ACAlertAction: ACAlertActionProtocolBase {
+public class ACAlertAction: ACAlertActionProtocolBase {
     
-    open let alertView: UIView
-    open let handler: ((ACAlertAction) -> Void)?
+    public let alertView: UIView
+    public let handler: ((ACAlertAction) -> Void)?
     
     public init(view: UIView, handler: ((ACAlertAction) -> Void)?) {
         self.alertView = view
@@ -53,13 +53,13 @@ open class ACAlertAction: ACAlertActionProtocolBase {
     }
 }
 
-open class ACAlertActionNative: ACAlertActionProtocolBase {
+public class ACAlertActionNative: ACAlertActionProtocolBase {
     
-    open let handler: ((ACAlertActionNative) -> Void)?
+    public let handler: ((ACAlertActionNative) -> Void)?
     
-    open let title: String?
-    open let style: UIAlertActionStyle
-    open var enabled: Bool = true
+    public let title: String?
+    public let style: UIAlertActionStyle
+    public var enabled: Bool = true
     
     public init(title: String?, style: UIAlertActionStyle, handler: ((ACAlertActionNative) -> Void)?) {
         self.title = title

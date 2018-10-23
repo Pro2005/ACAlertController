@@ -145,8 +145,8 @@ open class ACStackAlertListView: ACAlertListViewProtocol {
     public var view: UIView { return scrollView }
     public var contentHeight: CGFloat
     
-    open let stackView: UIStackView
-    open let scrollView = UIScrollView()
+    public let stackView: UIStackView
+    public let scrollView = UIScrollView()
     
     open var margins = UIEdgeInsets(top: 10, left: 5, bottom: 10, right: 5)
     
@@ -171,14 +171,14 @@ open class ACStackAlertListView: ACAlertListViewProtocol {
     }
 }
 
-open class ACStackAlertListView2: ACAlertListViewProtocol {
-    open var view: UIView { return scrollView }
-    open var contentHeight: CGFloat
+public class ACStackAlertListView2: ACAlertListViewProtocol {
+    public var view: UIView { return scrollView }
+    public var contentHeight: CGFloat
     
-    open let stackView: UIStackView
-    open let scrollView = UIScrollView()
+    public let stackView: UIStackView
+    public let scrollView = UIScrollView()
     
-    open var margins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    public var margins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     
     public init(views: [UIView], width: CGFloat) {
         
@@ -201,14 +201,14 @@ open class ACStackAlertListView2: ACAlertListViewProtocol {
     }
 }
 
-open class ACStackAlertListView3: ACAlertListViewProtocol {
-    open var view: UIView { return scrollView }
-    open var contentHeight: CGFloat
+public class ACStackAlertListView3: ACAlertListViewProtocol {
+    public var view: UIView { return scrollView }
+    public var contentHeight: CGFloat
     
-    open let stackView: UIStackView
-    open let scrollView = UIScrollView()
+    public let stackView: UIStackView
+    public let scrollView = UIScrollView()
     
-    open var margins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    public var margins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     
     public init(views: [UIView], width: CGFloat) {
         
@@ -401,35 +401,35 @@ extension ACAlertController: UIViewControllerTransitioningDelegate {
     }
 }
 
-open class Layout {
+public class Layout {
     
-    open static var nonMandatoryConstraintPriority: UILayoutPriority = 700 // Item's and action's constraints that could conflict with ACAlertController constraints should have priorities in [nonMandatoryConstraintPriority ..< 1000] range.
+    public static var nonMandatoryConstraintPriority: UILayoutPriority = UILayoutPriority(rawValue: 700) // Item's and action's constraints that could conflict with ACAlertController constraints should have priorities in [nonMandatoryConstraintPriority ..< 1000] range.
     
-    open class func set(width: CGFloat, view: UIView) {
+    public class func set(width: CGFloat, view: UIView) {
         
         NSLayoutConstraint(item: view, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: width).isActive = true
     }
     
-    open class func set(height: CGFloat, view: UIView) {
+    public class func set(height: CGFloat, view: UIView) {
         
         NSLayoutConstraint(item: view, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: height).isActive = true
     }
 
-    open class func setOptional(height: CGFloat, view: UIView) {
+    public class func setOptional(height: CGFloat, view: UIView) {
         
         let constraint = NSLayoutConstraint(item: view, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: height)
         constraint.priority = nonMandatoryConstraintPriority
         constraint.isActive = true
     }
     
-    open class func setOptional(width: CGFloat, view: UIView) {
+    public class func setOptional(width: CGFloat, view: UIView) {
         
         let constraint = NSLayoutConstraint(item: view, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: width)
         constraint.priority = nonMandatoryConstraintPriority
         constraint.isActive = true
     }
     
-    open class func setInCenter(view: UIView, subview: UIView, margins: Bool) {
+    public class func setInCenter(view: UIView, subview: UIView, margins: Bool) {
         
         NSLayoutConstraint(item: view, attribute: margins ? .leadingMargin : .leading, relatedBy: .lessThanOrEqual, toItem: subview, attribute: .leading, multiplier: 1, constant: 0).isActive = true
         
@@ -448,7 +448,7 @@ open class Layout {
         centerY.isActive = true
     }
     
-    open class func setEqual(view: UIView, subview: UIView, margins: Bool) {
+    public class func setEqual(view: UIView, subview: UIView, margins: Bool) {
         
         NSLayoutConstraint(item: view, attribute: margins ? .leftMargin : .left, relatedBy: .equal, toItem: subview, attribute: .left, multiplier: 1, constant: 0).isActive = true
         
@@ -459,23 +459,23 @@ open class Layout {
         NSLayoutConstraint(item: view, attribute: margins ? .bottomMargin: .bottom, relatedBy: .equal, toItem: subview, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
     }
 
-    open class func setEqualLeftAndRight(view: UIView, subview: UIView, margins: Bool) {
+    public class func setEqualLeftAndRight(view: UIView, subview: UIView, margins: Bool) {
         
         NSLayoutConstraint(item: view, attribute: margins ? .leftMargin : .left, relatedBy: .equal, toItem: subview, attribute: .left, multiplier: 1, constant: 0).isActive = true
         
         NSLayoutConstraint(item: view, attribute: margins ? .rightMargin : .right, relatedBy: .equal, toItem: subview, attribute: .right, multiplier: 1, constant: 0).isActive = true
     }
     
-    open class func setEqualTop(view: UIView, subview: UIView, margins: Bool) {
+    public class func setEqualTop(view: UIView, subview: UIView, margins: Bool) {
         NSLayoutConstraint(item: view, attribute: margins ? .topMargin : .top, relatedBy: .equal, toItem: subview, attribute: .top, multiplier: 1, constant: 0).isActive = true
     }
     
-    open class func setEqualBottom(view: UIView, subview: UIView, margins: Bool) {
+    public class func setEqualBottom(view: UIView, subview: UIView, margins: Bool) {
         
         NSLayoutConstraint(item: view, attribute: margins ? .bottomMargin : .bottom, relatedBy: .equal, toItem: subview, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
     }
     
-    open class func setBottomToTop(topView: UIView, bottomView: UIView) {
+    public class func setBottomToTop(topView: UIView, bottomView: UIView) {
         
         NSLayoutConstraint(item: topView, attribute: .bottom, relatedBy: .equal, toItem: bottomView, attribute: .top, multiplier: 1, constant: 0).isActive = true
     }

@@ -56,7 +56,7 @@ open class ACAlertController0 : UIViewController {
     open var defaultButtonHeight: CGFloat = 45
     open var alertWidth: CGFloat = 270
     
-    open var nonMandatoryConstraintPriority: UILayoutPriority = 900 // Item's and action's constraints that could conflict with ACAlertController constraints should have priorities in [nonMandatoryConstraintPriority ..< 1000] range.
+    open var nonMandatoryConstraintPriority: UILayoutPriority = UILayoutPriority(rawValue: 900) // Item's and action's constraints that could conflict with ACAlertController constraints should have priorities in [nonMandatoryConstraintPriority ..< 1000] range.
 
     
     // MARK: Private properties
