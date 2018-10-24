@@ -13,7 +13,7 @@ class ACTouchGestureRecognizer: UIGestureRecognizer {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
         
         
-        var expectedState = UIGestureRecognizerState.failed
+        var expectedState = UIGestureRecognizer.State.failed
         if touches.count != 1 {
             expectedState = .failed
         }

@@ -167,7 +167,7 @@ open class ACStackAlertListView: ACAlertListViewProtocol {
         
         stackView.layoutMargins = margins
         stackView.isLayoutMarginsRelativeArrangement = true
-        contentHeight = stackView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
+        contentHeight = stackView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
     }
 }
 
@@ -197,7 +197,7 @@ public class ACStackAlertListView2: ACAlertListViewProtocol {
         
         stackView.layoutMargins = margins
         stackView.isLayoutMarginsRelativeArrangement = true
-        contentHeight = stackView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
+        contentHeight = stackView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
     }
 }
 
@@ -227,7 +227,7 @@ public class ACStackAlertListView3: ACAlertListViewProtocol {
         
         stackView.layoutMargins = margins
         stackView.isLayoutMarginsRelativeArrangement = true
-        contentHeight = stackView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
+        contentHeight = stackView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
     }
 }
 

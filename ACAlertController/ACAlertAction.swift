@@ -58,10 +58,10 @@ public class ACAlertActionNative: ACAlertActionProtocolBase {
     public let handler: ((ACAlertActionNative) -> Void)?
     
     public let title: String?
-    public let style: UIAlertActionStyle
+    public let style: UIAlertAction.Style
     public var enabled: Bool = true
     
-    public init(title: String?, style: UIAlertActionStyle, handler: ((ACAlertActionNative) -> Void)?) {
+    public init(title: String?, style: UIAlertAction.Style, handler: ((ACAlertActionNative) -> Void)?) {
         self.title = title
         self.style = style
         self.handler = handler

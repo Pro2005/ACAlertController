@@ -368,7 +368,7 @@ open class ACAlertController0 : UIViewController {
         return button
     }
     
-    fileprivate func addButton(_ button: UIView, lastView: UIView?, leadingAttr: NSLayoutAttribute = .leading, trailingAttr: NSLayoutAttribute = .trailing) {
+    fileprivate func addButton(_ button: UIView, lastView: UIView?, leadingAttr: NSLayoutConstraint.Attribute = .leading, trailingAttr: NSLayoutConstraint.Attribute = .trailing) {
         
         alertView.addSubview(button)
         
